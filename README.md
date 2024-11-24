@@ -1,6 +1,6 @@
 # GFSystem
 
-Bem-vindo ao **Controle de Faltas**, um sistema simples e eficiente desenvolvido em **Django** para gerenciar suas matérias e acompanhar suas faltas ao longo do período letivo. O sistema fornece relatórios visuais e alertas sobre o percentual de faltas, ajudando você a evitar reprovações por excesso de faltas.
+Bem-vindo ao **GFSystem**, um sistema simples e eficiente desenvolvido em **Django** para gerenciar suas matérias e acompanhar suas faltas ao longo do período letivo. O sistema fornece relatórios visuais e alertas sobre o percentual de faltas, ajudando você a evitar reprovações por excesso de faltas.
 
 ---
 
