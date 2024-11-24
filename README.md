@@ -47,8 +47,8 @@ Certifique-se de ter os seguintes itens instalados no seu ambiente:
 
 1. **Clone este repositório:**
    ```bash
-   git clone https://github.com/seuusuario/controle-de-faltas.git
-   cd controle-de-faltas
+   git clone https://github.com/Cromablue/GFSystem.git
+   cd GFSystem
    ```
 
 2. **Crie e ative um ambiente virtual:**
