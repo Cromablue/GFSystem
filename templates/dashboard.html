@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 fw-bold" style="margin-top: 40px;">Minhas Matérias</h1>
+
+    {% if materias %}
+        <!-- Botão "Finalizar Período" -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'finalizar_periodo' %}" class="btn btn-danger btn-lg fw-bold">
+                <i class="bi bi-trash3"></i> Finalizar Período
+            </a>
+        </div>
+        <div class="row g-4">
+            {% for materia in materias %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow border-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark fw-bold">{{ materia.nome }}</h5>
+                            {% if materia.descricao %}
+                                <p class="card-text text-secondary">{{ materia.descricao }}</p>
+                            {% endif %}
+                            <p class="mb-1"><strong>Carga Horária:</strong> {{ materia.carga_horaria }}h</p>
+                            <p class="mb-1"><strong>Dias:</strong> {{ materia.dias_semana }}</p>
+                            <p class="mb-1">
+                                <strong>Faltas:</strong> {{ materia.faltas }}
+                                <span class="badge 
+                                    {% if materia.percentual_usado <= 25 %}bg-success{% elif materia.percentual_usado <= 50 %}bg-warning{% elif materia.percentual_usado > 75 %}bg-danger{% endif %}
+                                    ">
+                                    {{ materia.percentual_usado|floatformat:2 }}%
+                                </span>
+                            </p>
+                            <p class="mb-1">
+                                {% if materia.percentual_usado <= 40 %}
+                                    <span class="text-success">Tá de boa</span>
+                                {% elif materia.percentual_usado <= 90 %}
+                                    <span class="text-warning">Melhor não faltar</span>
+                                {% elif materia.percentual_usado <= 95 %}
+                                    <span class="text-danger">Mais um reprova</span>
+                                {% else %}
+                                    <span class="text-danger">Reprovou mn</span>
+                                {% endif %}
+                            </p>
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{% url 'editar_materia' materia.pk %}" class="btn btn-success btn-sm">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <a href="{% url 'adicionar_faltas' materia.pk %}" class="btn btn-danger btn-sm ms-2 fw-bold">
+                                    <i class="bi bi-plus-circle"></i> Faltei :(
+                                </a>        
+                                <a href="{% url 'remover_materia' materia.pk %}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Remover
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <p class="text-muted fs-5">Você ainda não adicionou nenhuma matéria.</p>
+            <a href="{% url 'adicionar_materia' %}" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle"></i> Adicionar Matéria
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

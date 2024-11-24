@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Remover Matéria{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1>Remover Matéria</h1>
+    <p class="mb-4">Tem certeza que deseja remover <strong>"{{ materia.nome }}"</strong>?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, remover</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

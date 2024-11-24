@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- Corrigindo o link do favicon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'admin/img/calendario-icon.png' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GFSystem{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    {% include 'partials/header.html' %}
+
+    <!-- Conteúdo principal -->
+    <main class="content flex-grow-1 container-fluid mt-0">
+        {% block content %} {% endblock %}
+    </main>
+
+    <!-- Rodapé -->
+    {% include 'partials/footer.html' %}
+</body>
+</html>
