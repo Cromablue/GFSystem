@@ -3,13 +3,13 @@ from . import views
 
 urlpatterns = [
     # Rotas públicas
-    path('login/', views.login_view, name='login'),
+    path('', views.login_view, name='login'),
     path('cadastro/', views.cadastro_view, name='cadastro'),
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-periodo/', views.finalizar_periodo, name='finalizar_periodo'),
 
     # Rotas protegidas
-    path('', views.dashboard, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('adicionar/', views.adicionar_materia, name='adicionar_materia'),
     path('editar/<int:pk>/', views.editar_materia, name='editar_materia'),
     path('remover/<int:pk>/', views.remover_materia, name='remover_materia'),

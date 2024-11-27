@@ -25,20 +25,22 @@
                             <p class="mb-1">
                                 <strong>Faltas:</strong> {{ materia.faltas }}
                                 <span class="badge 
-                                    {% if materia.percentual_usado <= 25 %}bg-success{% elif materia.percentual_usado <= 50 %}bg-warning{% elif materia.percentual_usado > 75 %}bg-danger{% endif %}
+                                    {% if materia.percentual_usado <= 50 %}bg-success{% elif materia.percentual_usado <= 80 %}bg-warning{% elif materia.percentual_usado > 80 %}bg-danger{% endif %}
                                     ">
                                     {{ materia.percentual_usado|floatformat:2 }}%
                                 </span>
                             </p>
                             <p class="mb-1">
                                 {% if materia.percentual_usado <= 40 %}
-                                    <span class="text-success">Tá de boa</span>
+                                    <span class="text-success">Pode faltar.</span>
+                                {% elif materia.percentual_usado <= 85 %}
+                                    <span class="text-warning">Pode faltar, mas gerencia melhor suas faltas.</span>
                                 {% elif materia.percentual_usado <= 90 %}
-                                    <span class="text-warning">Melhor não faltar</span>
+                                    <span class="text-warning">Pode faltar, mas vai ser a ultima vez.</span>
                                 {% elif materia.percentual_usado <= 95 %}
-                                    <span class="text-danger">Mais um reprova</span>
+                                    <span class="text-danger">Mais um reprova.</span>
                                 {% else %}
-                                    <span class="text-danger">Reprovou mn</span>
+                                    <span class="text-danger">Reprovou mn.</span>
                                 {% endif %}
                             </p>
                             <div class="d-flex justify-content-between mt-3">
