@@ -1,17 +1,45 @@
 <!-- GFSysten/templates/partials/header.html -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg" id="navbar">
     <div class="container">
-        <a class="navbar-brand" href="/">GFSystem</a>
+        <a class="navbar-brand" href="/dashboard" id="botao-navbar">GFSystem</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link text-dark" href="/dashboard">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="/">Login</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="/cadastro">Cadastrar</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="/adicionar/">Adicionar Matéria</a></li>
+                <li class="nav-item"><a id="botao-navbar" class="nav-link" href="/dashboard">Home</a></li>
+                <li class="nav-item"><a id="botao-navbar" class="nav-link" href="/">Login</a></li>
+                <li class="nav-item"><a id="botao-navbar" class="nav-link" href="/cadastro">Cadastrar</a></li>
+                <li class="nav-item"><a id="botao-navbar" class="nav-link" href="/adicionar/">Adicionar Matéria</a></li>
+                <li class="nav-item"><button id="toggle-dark-mode" class="btn btn-dark">Modo escuro</button></li>
             </ul>
         </div>
     </div>
+    <script>
+        // Selecionar o botão de alternância de modo
+        const toggleDarkModeButton = document.getElementById('toggle-dark-mode');
+    
+        // Verificar no localStorage se o modo escuro está ativado
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            toggleDarkModeButton.textContent = 'Modo Claro';
+            toggleDarkModeButton.classList.replace('btn-dark', 'btn-light');
+        }
+        // Alternar entre os modos e salvar no localStorage
+        toggleDarkModeButton.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                this.textContent = 'Modo Claro';
+                this.classList.replace('btn-dark', 'btn-light');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                this.textContent = 'Modo Escuro';
+                this.classList.replace('btn-light', 'btn-dark');
+            }
+        });
+    </script>    
 </nav>
+
+

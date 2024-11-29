@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 fw-bold">{{ materia.nome }}</h1>
+    <!-- <div class="card shadow border-0 bg-transparent">
+        <div class="card-body p-4 text-center">
+            <h5 class="card-title fw-bold text-secondary">{{ materia.nome }}</h5> -->
+            
+            <!-- Formulário para editar ou adicionar anotações -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="anotacoes" class="form-label">Anotações</label>
+                    <textarea name="anotacoes" id="anotacoes" rows="5" 
+                              class="form-control"
+                              style="background-color: var(--input-bg); color: var(--input-text);">
+                        {{ materia.anotacoes }}
+                    </textarea>
+                </div>
+                <button type="submit" class="btn btn-success w-20" style="transition: background-color 0.5s ease;">
+                    Salvar
+                </button>
+                <a href="{% url 'dashboard' %}" class="btn btn-danger w-20" style="transition: background-color 0.5s ease;">
+                    Voltar para o Dashboard
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

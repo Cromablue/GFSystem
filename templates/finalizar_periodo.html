@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 fw-bold" style="color: #007BFF;">Finalizar Período</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="ano" class="form-label">Ano</label>
+            <select id="ano" name="ano" class="form-select">
+                {% for ano in anos %}
+                    <option value="{{ ano }}">{{ ano }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="semestre" class="form-label">Semestre</label>
+            <select id="semestre" name="semestre" class="form-select">
+                <option value="1">1º Semestre</option>
+                <option value="2">2º Semestre</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-danger">Finalizar</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

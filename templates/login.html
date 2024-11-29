@@ -1,34 +1,29 @@
 {% extends 'base.html' %}
-
 {% block title %}Login{% endblock %}
-
 {% block content %}
 <div class="container-fluid h-100 mt-0 justify-content-top">
     <div class="row h-100">
-        <!-- Lado esquerdo -->
-        <div class="col-md-6 bg-success text-white d-flex flex-column justify-content-center align-items-center p-5">
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center p-5 {{ theme_class }}">
             <h1 class="mb-4">Bem Vindo</h1>
-            <p class="text-center">
+            <p class="">
                 Entre e gerencie suas faltas e anotações
             </p>
         </div>
-
-        <!-- Lado direito -->
-        <div class="col-md-6 bg-white d-flex flex-column justify-content-center">
-            <h1 class="text-center mb-4">Login</h1>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h1 class="text-center mb-4 {{ text_class }}">Login</h1>
             <form method="POST" class="w-75 mx-auto">
                 {% csrf_token %}
                 {{ form.as_p }}
         
-                <button type="submit" class="btn btn-success w-60">Login</button>
-
+                <button type="submit" class="btn btn-success  w-100">Login</button>
             </form>
-            <p class="mt-3 text-center">
-                Ainda não é cadastrado? 
-                <a href="{% url 'cadastro' %}">Cadastrar</a>
-            </p>
+            <div class="w-75 mx-auto">
+                <p class="mt-3 text-center">
+                    Já tem conta? 
+                    <a href="{% url 'cadastro' %}" class="btn btn-primary btn-sm transition-all w-100 ">Cadastrar-se</a>
+                </p>
+                </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

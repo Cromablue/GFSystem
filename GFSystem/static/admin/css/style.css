@@ -1,91 +1,224 @@
+/* Reset básico */
 html, body {
     height: 100%;
     margin: 0;
-    padding: 0; /* Garantir que não há margem ou padding adicionais */
+    padding: 0;
 }
 
+/* Corpo padrão */
 body {
     display: flex;
     flex-direction: column;
-    background-color: #f8f9fa;
-    min-height: 100vh; /* Garantir que o corpo ocupe toda a altura */
+    min-height: 100vh;
+    background: #f8f9fa; /* Cor de fundo padrão no modo claro */
+    color: #000; /* Texto padrão no modo claro */
+    transition: background 0.5s ease, color 0.5s ease; /* Transição suave */
 }
 
-.content {
-    flex-grow: 1; /* Faz o conteúdo expandir para ocupar o máximo de espaço */
-    padding: 0; /* Remover qualquer padding adicional */
+/* Modo escuro */
+body.dark-mode {
+    background: #121212; /* Fundo escuro */
+    color: #fff; /* Texto claro para contraste */
 }
 
-footer {
-    background-color: #343a40;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    width: 100%;
+/* Gradiente animado no modo claro */
+body.gradient-custom {
+    background: white;
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+}
+/* Gradiente para o modo escuro */
+body.dark-mode.gradient-custom {
+    background: linear-gradient(-45deg, #232526, #414345, #2c3e50, #4b79a1, #283048);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
 }
 
+/* Animação do gradiente */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Estilo para o navbar */
 .navbar {
+    background-color: #003366;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.nav-link {
+body.dark-mode .navbar {
+    background-color: #212529;
+}
+
+/* Estilo para os links da navbar */
+#botao-navbar {
     font-weight: bold;
     font-size: 1rem;
+    color: #ffffff; /* Padrão claro */
+    transition: color 0.5s ease;
 }
 
-.nav-link:hover {
-    color: #0056b3 !important;
+body.dark-mode #botao-navbar {
+    color: #fff; /* Padrão escuro */
 }
 
-.container-fluid {
-    padding: 0; /* Remover padding */
+#botao-navbar:hover {
+    color: #002fff !important;
 }
 
-.bg-danger {
-    background: linear-gradient(to bottom, #b22222, #8b0000);
-    background-image: url('path/to/your/calendar-image.png'); /* Substitua pelo caminho real da imagem */
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+/* Botão de alternar modo */
+#toggle-dark-mode {
+
+    border: none;
+    transition: background-color 0.5s ease;
 }
 
+body.dark-mode #toggle-dark-mode {
+    background-color: #343a40;
+    color: #fff;
+}
+
+/* Formulários */
+form {
+    background: #fff; /* Fundo padrão claro */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+body.dark-mode form {
+    background: #1e1e1e94; /* Fundo escuro */
+    color: #fff; /* Texto claro */
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Botões */
+button {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.btn-success2{
+    background: #003366;
+    color: #fff;
+}
+
+.btn-success {
+    background: #28a745;
+    color: #fff;
+}
+
+body.dark-mode .btn-success {
+    background: #218838;
+    color: #fff;
+}
+
+/* Lado esquerdo (boas-vindas) */
+.bg-success {
+    background-color: #28a745 !important; /* Verde padrão */
+    color: #fff;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+body.dark-mode .bg-success {
+    background-color: #1b5e20 !important; /* Verde escuro */
+}
+
+/* Lado direito (formulários no modo claro) */
 .bg-white {
+    background: #fff;
+    color: #000;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+body.dark-mode .bg-white {
+    background: #1e1e1e;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Texto */
 h1, p {
     font-family: 'Arial', sans-serif;
 }
 
-.btn-danger {
-    background: linear-gradient(to right, #b22222, #8b0000);
-    border: none;
-}
-
-.btn-danger:hover {
-    background: #8b0000;
-}
-
+/* Placeholder dos inputs */
 input::placeholder {
-    color: #ccc;
+    color: #6c757d; /* Placeholder no modo claro */
     font-style: italic;
 }
 
-.gradient-custom-2 {
-    background: #fccb90;
-    background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
-    background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+body.dark-mode input::placeholder {
+    color: #aaa; /* Placeholder no modo escuro */
 }
 
-@media (min-width: 768px) {
-    .gradient-form {
-        height: 100vh !important;
-    }
+/* Ajuste de progresso */
+.progress {
+    height: 20px;
 }
 
-@media (min-width: 769px) {
-    .gradient-custom-2 {
-        border-top-right-radius: .3rem;
-        border-bottom-right-radius: .3rem;
-    }
+.progress-bar {
+    font-size: 14px;
+    font-weight: bold;
+}
+/* Estilo básico para o rodapé */
+footer {
+    background-color: rgba(255, 255, 255, 0.75); /* Fundo padrão no modo claro */
+    color: #000; /* Texto escuro no modo claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    transition: background-color 0.5s ease, color 0.5s ease; /* Transição suave */
+    position: fixed; /* Fixa o rodapé na parte inferior */
+    bottom: 0;
+    width: 100%;
+}
+
+/* Modo escuro para o rodapé */
+body.dark-mode footer {
+    background-color: #212529; /* Fundo escuro */
+    color: #fff; /* Texto claro */
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Sombra leve no modo escuro */
+}
+
+/* Texto do rodapé */
+footer p {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Link do rodapé (caso necessário) */
+footer a {
+    color: #007bff; /* Azul padrão no modo claro */
+    text-decoration: none;
+    transition: color 0.5s ease;
+}
+
+footer a:hover {
+    color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+body.dark-mode footer a {
+    color: #90caf9; /* Azul claro no modo escuro */
+}
+
+body.dark-mode footer a:hover {
+    color: #42a5f5; /* Azul mais vibrante no modo escuro */
+}
+
+/* Estilo para o card no modo escuro */
+body.dark-mode .card {
+    background-color: #343a40; /* Fundo escuro para o card */
+    color: #fff; /* Texto claro no card */
+}
+
+/* Estilo para os títulos no card no modo escuro */
+body.dark-mode .card-title {
+    color: #fff; /* Título claro */
+}
+
+/* Estilo para os textos do card no modo escuro */
+body.dark-mode .card-text {
+    color: #bbb; /* Texto mais suave */
 }
