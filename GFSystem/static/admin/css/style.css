@@ -7,6 +7,7 @@ html, body {
 
 /* Corpo padrão */
 body {
+    font-family: 'Roboto', sans-serif; /* Fonte padrão para o corpo */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -82,12 +83,14 @@ body.dark-mode #toggle-dark-mode {
 
 /* Formulários */
 form {
+    font-family: 'Roboto', sans-serif;
     background: #fff; /* Fundo padrão claro */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: background 0.5s ease, color 0.5s ease;
 }
+
 
 body.dark-mode form {
     background: #1e1e1e94; /* Fundo escuro */
@@ -140,8 +143,12 @@ body.dark-mode .bg-white {
 }
 
 /* Texto */
-h1, p {
-    font-family: 'Arial', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', sans-serif; /* Fonte elegante para os títulos */
+    font-weight: bold;
+}
+p, span, a {
+    font-family: 'Open Sans', sans-serif; /* Fonte legível para textos */
 }
 
 /* Placeholder dos inputs */
@@ -165,13 +172,17 @@ body.dark-mode input::placeholder {
 }
 /* Estilo básico para o rodapé */
 footer {
-    background-color: rgba(255, 255, 255, 0.75); /* Fundo padrão no modo claro */
+    background-color: rgba(207, 207, 207, 0.753); /* Fundo padrão no modo claro */
     color: #000; /* Texto escuro no modo claro */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.268); /* Sombra leve */
     transition: background-color 0.5s ease, color 0.5s ease; /* Transição suave */
     position: fixed; /* Fixa o rodapé na parte inferior */
     bottom: 0;
     width: 100%;
+}
+footer p, footer a {
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 /* Modo escuro para o rodapé */
@@ -186,25 +197,6 @@ footer p {
     font-family: 'Arial', sans-serif;
     margin: 0;
     font-size: 0.9rem;
-}
-
-/* Link do rodapé (caso necessário) */
-footer a {
-    color: #007bff; /* Azul padrão no modo claro */
-    text-decoration: none;
-    transition: color 0.5s ease;
-}
-
-footer a:hover {
-    color: #0056b3; /* Azul mais escuro ao passar o mouse */
-}
-
-body.dark-mode footer a {
-    color: #90caf9; /* Azul claro no modo escuro */
-}
-
-body.dark-mode footer a:hover {
-    color: #42a5f5; /* Azul mais vibrante no modo escuro */
 }
 
 /* Estilo para o card no modo escuro */

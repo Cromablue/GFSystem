@@ -11,8 +11,12 @@
             <div class="mb-3">
                 {{ form.as_p }}
             </div>
-            <button type="button" class="btn btn-outline-danger w-100" onclick="window.location.href = '{% url 'dashboard' %}'">Cancelar</button>
-            <button type="submit" class="btn btn-outline-success w-100">Salvar Alterações</button>
+            <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-danger w-50" onclick="window.location.href = '{% url 'dashboard' %}'">
+                Cancelar
+            </button>
+            <button type="submit" class="btn btn-success w-50">Salvar Alterações</button>
+            </div>
         </form>
     </div>
 </div>
