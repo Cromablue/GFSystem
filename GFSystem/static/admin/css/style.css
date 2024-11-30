@@ -214,3 +214,70 @@ body.dark-mode .card-title {
 body.dark-mode .card-text {
     color: #bbb; /* Texto mais suave */
 }
+
+/* Modal padrão */
+.modal-content {
+    background-color: #fff; /* Fundo padrão no modo claro */
+    color: #000; /* Texto padrão no modo claro */
+    border-radius: 8px; /* Bordas arredondadas */
+    transition: background-color 0.5s ease, color 0.5s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal no modo escuro */
+body.dark-mode .modal-content {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #fff; /* Texto claro */
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Modal header */
+.modal-header {
+    border-bottom: 1px solid #dee2e6; /* Linha de divisão no modo claro */
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #343a40; /* Linha de divisão no modo escuro */
+}
+
+/* Botão fechar no modal */
+.modal-header .btn-close {
+    background-color: transparent;
+    border: none;
+}
+
+body.dark-mode .modal-header .btn-close {
+    filter: invert(1); /* Ajuste a cor no modo escuro */
+}
+
+/* Modal footer */
+.modal-footer {
+    border-top: 1px solid #dee2e6; /* Linha de divisão no modo claro */
+}
+
+body.dark-mode .modal-footer {
+    border-top: 1px solid #343a40; /* Linha de divisão no modo escuro */
+}
+
+/* Botões no modal */
+.modal-footer .btn {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.modal-footer .btn-danger {
+    background-color: #dc3545; /* Vermelho padrão */
+    color: #fff;
+}
+
+body.dark-mode .modal-footer .btn-danger {
+    background-color: #ff0000; /* Vermelho claro no modo escuro */
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d; /* Cinza padrão */
+    color: #fff;
+}
+
+body.dark-mode .modal-footer .btn-secondary {
+    background-color: #495057; /* Cinza escuro no modo escuro */
+}

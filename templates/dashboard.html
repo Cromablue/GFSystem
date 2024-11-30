@@ -12,13 +12,15 @@
                         <div class="card-body">
                             <div>
                                 <h5 class="fw-bold">{{ materia.nome }}
-                                    <a href="{% url 'remover_materia' materia.pk %}" class="btn btn-sm transition-all float-end">
-                                        <i class="bi bi-trash">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                              </svg>
-                                        </i>
-                                    </a>
+                                        <button class="btn btn-sm transition-all float-end" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#removerMateriaModal-{{ materia.pk }}">
+                                            <i class="bi bi-trash">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                  </svg>
+                                            </i>
+                                    </button>
                                     <a href="{% url 'editar_materia' materia.pk %}" class="btn btn-sm transition-all float-end">
                                         <i class="bi bi-pencil-square"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-pencil-square" viewBox="0 0 18 19">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -53,7 +55,6 @@
                                     </div>
                                 </div>
                             </p>
-
                             <p class="mb-2 text-center fw-bold">
                                 {% if materia.percentual_usado <= 12 %}
                                     <span class="text-success">Ta podendo faltar.</span>
@@ -67,14 +68,11 @@
                                     <span class="text-danger">Reprovou por falta.</span>
                                 {% endif %}
                             </p>
-
                             <!-- Botões de ação -->
-                            <div class="d-flex justify-content-between align-items-center mt-4">
-                            
+                            <div class="d-flex justify-content-between align-items-center mt-4">                           
                                 <a href="{% url 'adicionar_faltas' materia.pk %}" class="btn btn-danger btn-sm transition-all">
                                     <i class="bi bi-plus-circle"></i> Faltei
                                 </a>
-                                
                                 <a href="{% url 'ver_anotacoes' materia.pk %}" class="btn btn-primary btn-sm transition-all">
                                     <i class="bi bi-journal-text"></i> Anotações 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-journal-check" viewBox="0 0 16 16">
@@ -87,6 +85,28 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Modal para confirmação de remoção -->
+                <div class="modal fade" id="removerMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="removerMateriaLabel-{{ materia.pk }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="removerMateriaLabel-{{ materia.pk }}">Remover Matéria</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Tem certeza que deseja remover <strong>"{{ materia.nome }}"</strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form method="POST" action="{% url 'remover_materia' materia.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Sim, remover</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
             {% endfor %}
             <div class="d-flex justify-content-end mb-4">
                 <a href="{% url 'finalizar_periodo' %}" id="finalizar_periodo" class="btn btn-danger btn-center fw-bold shadow-sm border-0 transition-all">

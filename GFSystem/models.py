@@ -69,8 +69,7 @@ class Materia(models.Model):
 
     def __str__(self):
         return self.nome
-
-
+    
     class Meta:
         verbose_name = 'Matéria'
         verbose_name_plural = 'Matérias'
