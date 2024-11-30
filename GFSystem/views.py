@@ -1,26 +1,61 @@
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, MateriaForm
 from .models import Materia
 from django.utils import timezone
+import re
 
 
 # Página inicial (dashboard)
-def cadastro_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Cadastro realizado com sucesso! Agora você pode fazer login.")
-            return redirect('login')  # Redireciona para a página de login após o cadastro
-        else:
-            messages.error(request, "Ocorreu um erro no cadastro. Verifique os dados e tente novamente.")
-    else:
-        form = UserCreationForm()
-    return render(request, 'cadastro.html', {'form': form})
+def cadastro(request):
+    if request.method == "POST":
+        # Coletando os dados do formulário
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        # Lista para armazenar mensagens de erro
+        errors = []
+
+        # Validação do Nome de Usuário
+        if not username.isalnum():
+            errors.append("O nome de usuário deve conter apenas letras e números.")
+        if User.objects.filter(username=username).exists():
+            errors.append("Este nome de usuário já está em uso.")
+
+        # Validação do Email
+        if User.objects.filter(email=email).exists():
+            errors.append("Este email já está em uso.")
+        #validando se finaliza corretamente
+        if not email.endswith('.com'):
+            errors.append("O email deve conter .com")
+
+        # Validação da Senha
+        password_regex = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$'
+        if not re.match(password_regex, password1):
+            errors.append("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.")
+        
+        # Confirmação da Senha
+        if password1 != password2:
+            errors.append("As senhas não coincidem.")
+        
+        # Se houver erros, retornamos para o template com os erros
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'cadastro.html')
+
+        # Se não houver erros, criamos o usuário
+        user = User.objects.create_user(username=username, password=password1)
+        messages.success(request, "Cadastro realizado com sucesso!")
+        return redirect('login')
+
+    return render(request, 'cadastro.html')
 
 @login_required
 def dashboard(request):
@@ -40,17 +75,22 @@ def dashboard(request):
 
 # Página de login
 def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+    error_message = None  # Variável para passar o erro
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Redireciona para o dashboard após o login
-        else:
-            messages.error(request, "Usuário ou senha inválidos.")
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+            return redirect('dashboard')  # ou o redirecionamento para onde quiser
+
+        # Caso o usuário não exista ou a senha esteja incorreta
+        error_message = "Nome de usuário ou senha incorretos."
+    
+    return render(request, 'login.html', {'error_message': error_message})
 
 # Página de logout
 def logout_view(request):
@@ -96,7 +136,9 @@ def editar_materia(request, pk):
 def remover_materia(request, pk):
     materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
     if request.method == 'POST':
-        materia.delete()
+        #ocultando a matéria usando a caracteristica boleana oculto
+        materia.oculto = True
+        materia.save()
         messages.success(request, "Matéria removida com sucesso!")
         return redirect('dashboard')
     return render(request, 'remover_materia.html', {'materia': materia})

@@ -23,7 +23,9 @@
     <main class="content flex-grow-1 container-fluid mt-0">
         {% block content %} {% endblock %}
     </main>
-
+    <!-- Link para o app.js -->
+    <script src="{% static 'admin/js/app.js' %}"></script>    
+    
     <!-- Rodapé -->
     {% include 'partials/footer.html' %}
 </body>

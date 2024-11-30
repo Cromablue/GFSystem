@@ -26,7 +26,8 @@ class Materia(models.Model):
     dias_semana = models.JSONField(default=list, blank=True)
     faltas = models.IntegerField()
     anotacoes = models.TextField(default='', blank=True)
-
+    oculto = models.BooleanField(default=False)
+    
     # Ano e semestre de forma dinâmica
     ano = models.CharField(max_length=4, choices=ANOS, default="2023")  # Example definition
     semestre = models.CharField(max_length=1, choices=[('1', 'Primeiro Semestre'), ('2', 'Segundo Semestre')], default='1')

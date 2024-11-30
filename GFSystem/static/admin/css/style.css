@@ -1,96 +1,99 @@
-/* Reset básico */
+/* RESET BÁSICO */
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Corpo padrão */
+/* BODY GERAL */
 body {
-    font-family: 'Roboto', sans-serif; /* Fonte padrão para o corpo */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: #f8f9fa; /* Cor de fundo padrão no modo claro */
-    color: #000; /* Texto padrão no modo claro */
-    transition: background 0.5s ease, color 0.5s ease; /* Transição suave */
+    background: #f8f9fa; /* Fundo claro padrão */
+    color: #000; /* Texto escuro padrão */
+    transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* Modo escuro */
+/* MODO ESCURO */
 body.dark-mode {
     background: #121212; /* Fundo escuro */
-    color: #fff; /* Texto claro para contraste */
+    color: #ffffff; /* Texto claro */
 }
 
-/* Gradiente animado no modo claro */
+body.dark-mode .card {
+    background-color: #343a40;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+
+/* GRADIENTES */
 body.gradient-custom {
     background: white;
     background-size: 400% 400%;
     animation: gradientBG 10s ease infinite;
 }
-/* Gradiente para o modo escuro */
+
 body.dark-mode.gradient-custom {
     background: linear-gradient(-45deg, #232526, #414345, #2c3e50, #4b79a1, #283048);
     background-size: 400% 400%;
     animation: gradientBG 10s ease infinite;
 }
 
-/* Animação do gradiente */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Estilo para o navbar */
+/* NAVBAR */
 .navbar {
-    background-color: #003366;
+    background-color: #003366; /* Azul escuro */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark-mode .navbar {
-    background-color: #212529;
+    background-color: #212529; /* Fundo escuro para navbar */
 }
 
-/* Estilo para os links da navbar */
 #botao-navbar {
     font-weight: bold;
     font-size: 1rem;
-    color: #ffffff; /* Padrão claro */
+    color: #ffffff; /* Branco no modo claro */
     transition: color 0.5s ease;
 }
 
 body.dark-mode #botao-navbar {
-    color: #fff; /* Padrão escuro */
+    color: #ffffff; /* Branco no modo escuro */
 }
 
 #botao-navbar:hover {
-    color: #002fff !important;
+    color: #002fff !important; /* Destaque ao passar o mouse */
 }
 
-/* Botão de alternar modo */
+/* BOTÃO DE MODO ESCURO */
 #toggle-dark-mode {
-
     border: none;
     transition: background-color 0.5s ease;
 }
 
 body.dark-mode #toggle-dark-mode {
-    background-color: #343a40;
+    background-color: #343a40; /* Fundo escuro */
     color: #fff;
 }
 
-/* Formulários */
+/* FORMULÁRIOS */
 form {
-    font-family: 'Roboto', sans-serif;
-    background: #fff; /* Fundo padrão claro */
+    background: #fff; /* Fundo claro */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: background 0.5s ease, color 0.5s ease;
 }
-
 
 body.dark-mode form {
     background: #1e1e1e94; /* Fundo escuro */
@@ -98,38 +101,36 @@ body.dark-mode form {
     box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
 
-/* Botões */
-button {
+/* BOTÕES */
+button, .btn {
     transition: background-color 0.5s ease, color 0.5s ease;
+    font-family: 'Inter', sans-serif; /* Fonte legível e moderna */
 }
 
-.btn-success2{
+.btn-success2 {
     background: #003366;
     color: #fff;
 }
 
 .btn-success {
-    background: #28a745;
+    background: #28a745; /* Verde claro */
     color: #fff;
 }
 
 body.dark-mode .btn-success {
-    background: #218838;
-    color: #fff;
+    background: #218838; /* Verde escuro no modo escuro */
 }
 
-/* Lado esquerdo (boas-vindas) */
+/* LAYOUT ESPECÍFICO */
 .bg-success {
-    background-color: #28a745 !important; /* Verde padrão */
+    background-color: #28a745 !important; /* Fundo verde claro */
     color: #fff;
-    transition: background 0.5s ease, color 0.5s ease;
 }
 
 body.dark-mode .bg-success {
-    background-color: #1b5e20 !important; /* Verde escuro */
+    background-color: #1b5e20 !important; /* Fundo verde escuro */
 }
 
-/* Lado direito (formulários no modo claro) */
 .bg-white {
     background: #fff;
     color: #000;
@@ -142,18 +143,18 @@ body.dark-mode .bg-white {
     box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
 
-/* Texto */
+/* TIPOGRAFIA */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato', sans-serif; /* Fonte elegante para os títulos */
+    font-family: 'Poppins', sans-serif; /* Fonte moderna para títulos */
     font-weight: bold;
 }
+
 p, span, a {
-    font-family: 'Open Sans', sans-serif; /* Fonte legível para textos */
+    font-family: 'Inter', sans-serif; /* Fonte legível para textos */
 }
 
-/* Placeholder dos inputs */
 input::placeholder {
-    color: #6c757d; /* Placeholder no modo claro */
+    color: #6c757d; /* Placeholder padrão claro */
     font-style: italic;
 }
 
@@ -161,7 +162,7 @@ body.dark-mode input::placeholder {
     color: #aaa; /* Placeholder no modo escuro */
 }
 
-/* Ajuste de progresso */
+/* BARRA DE PROGRESSO */
 .progress {
     height: 20px;
 }
@@ -170,114 +171,62 @@ body.dark-mode input::placeholder {
     font-size: 14px;
     font-weight: bold;
 }
-/* Estilo básico para o rodapé */
+
+/* RODAPÉ */
 footer {
-    background-color: rgba(207, 207, 207, 0.753); /* Fundo padrão no modo claro */
-    color: #000; /* Texto escuro no modo claro */
-    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.268); /* Sombra leve */
-    transition: background-color 0.5s ease, color 0.5s ease; /* Transição suave */
-    position: fixed; /* Fixa o rodapé na parte inferior */
+    background-color: rgba(207, 207, 207, 0.753); /* Fundo claro */
+    color: #000;
+    box-shadow: 0 5px 6px rgba(0, 0, 0, 0.268);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
-footer p, footer a {
-    font-family: 'Open Sans', sans-serif;
 
-}
-
-/* Modo escuro para o rodapé */
 body.dark-mode footer {
-    background-color: #212529; /* Fundo escuro */
-    color: #fff; /* Texto claro */
-    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Sombra leve no modo escuro */
+    background-color: #212529;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
 }
 
-/* Texto do rodapé */
-footer p {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    font-size: 0.9rem;
-}
-
-/* Estilo para o card no modo escuro */
-body.dark-mode .card {
-    background-color: #343a40; /* Fundo escuro para o card */
-    color: #fff; /* Texto claro no card */
-}
-
-/* Estilo para os títulos no card no modo escuro */
-body.dark-mode .card-title {
-    color: #fff; /* Título claro */
-}
-
-/* Estilo para os textos do card no modo escuro */
-body.dark-mode .card-text {
-    color: #bbb; /* Texto mais suave */
-}
-
-/* Modal padrão */
+/* MODAIS */
 .modal-content {
-    background-color: #fff; /* Fundo padrão no modo claro */
-    color: #000; /* Texto padrão no modo claro */
-    border-radius: 8px; /* Bordas arredondadas */
+    background-color: #fff;
+    color: #000;
+    border-radius: 8px;
     transition: background-color 0.5s ease, color 0.5s ease;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Modal no modo escuro */
 body.dark-mode .modal-content {
-    background-color: #1e1e1e; /* Fundo escuro */
-    color: #fff; /* Texto claro */
+    background-color: #1e1e1e;
+    color: #fff;
     box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
 
-/* Modal header */
+.modal-footer .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+body.dark-mode .modal-footer .btn-danger {
+    background-color: #ff0000;
+}
+
+/* MODAL HEADER */
 .modal-header {
-    border-bottom: 1px solid #dee2e6; /* Linha de divisão no modo claro */
+    border-bottom: 1px solid #dee2e6;
 }
 
 body.dark-mode .modal-header {
-    border-bottom: 1px solid #343a40; /* Linha de divisão no modo escuro */
+    border-bottom: 1px solid #343a40;
 }
 
-/* Botão fechar no modal */
 .modal-header .btn-close {
     background-color: transparent;
     border: none;
 }
 
 body.dark-mode .modal-header .btn-close {
-    filter: invert(1); /* Ajuste a cor no modo escuro */
-}
-
-/* Modal footer */
-.modal-footer {
-    border-top: 1px solid #dee2e6; /* Linha de divisão no modo claro */
-}
-
-body.dark-mode .modal-footer {
-    border-top: 1px solid #343a40; /* Linha de divisão no modo escuro */
-}
-
-/* Botões no modal */
-.modal-footer .btn {
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-.modal-footer .btn-danger {
-    background-color: #dc3545; /* Vermelho padrão */
-    color: #fff;
-}
-
-body.dark-mode .modal-footer .btn-danger {
-    background-color: #ff0000; /* Vermelho claro no modo escuro */
-}
-
-.modal-footer .btn-secondary {
-    background-color: #6c757d; /* Cinza padrão */
-    color: #fff;
-}
-
-body.dark-mode .modal-footer .btn-secondary {
-    background-color: #495057; /* Cinza escuro no modo escuro */
+    filter: invert(1);
 }
