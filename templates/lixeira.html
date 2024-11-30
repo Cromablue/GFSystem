@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Matérias - Lixeira{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <p class="text-center mb-4 fs-1"><strong>Minha Lixeira</strong></p>
+    {% if materias %}
+        <div class="row g-4">
+            {% for materia in materias %}
+                {% if materia.oculto %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-lg border-0 rounded-3 transition-transform hover:scale-105">
+                            <div class="card-body">
+                                <h5 class="fw-bold">
+                                    {{ materia.nome }}
+                                    <button class="btn btn-sm float-end text-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#removerMateriaModal-{{ materia.pk }}" 
+                                            aria-label="Remover matéria">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </h5>
+                                {% if materia.descricao %}
+                                    <p class="card-text text-muted mb-3">{{ materia.descricao }}</p>
+                                {% endif %}
+                                <p><strong>Carga Horária:</strong> {{ materia.carga_horaria }}h</p>
+                                <p><strong>Dias:</strong> {{ materia.dias_semana_formatado }}</p>
+                                <p>
+                                    <strong>Faltas:</strong> {{ materia.faltas }}
+                                </p>
+                                <p><strong>Saldo de faltas utilizado:</strong></p>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated 
+                                        {% if materia.percentual_faltas_usadas <= 40 %}bg-success
+                                        {% elif materia.percentual_faltas_usadas <= 60 %}bg-warning
+                                        {% else %}bg-danger{% endif %}" 
+                                        role="progressbar" 
+                                        style="width: {{ materia.percentual_faltas_usadas|floatformat:0 }}%;" 
+                                        aria-valuenow="{{ materia.percentual_faltas_usadas|floatformat:0 }}" 
+                                        aria-valuemin="0" 
+                                        aria-valuemax="100">
+                                        {{ materia.percentual_faltas_usadas|floatformat:2 }}%
+                                    </div>
+                                </div>
+                                <p class="mb-2 text-center fw-bold">
+                                    {% if materia.percentual_usado <= 12 %}
+                                        <span class="text-success">Tá podendo faltar.</span>
+                                    {% elif materia.percentual_usado <= 18 %}
+                                        <span class="text-warning">Pode faltar, mas gerencie melhor suas faltas.</span>
+                                    {% elif materia.percentual_usado <= 23 %}
+                                        <span class="text-warning">Está nas últimas faltas.</span>
+                                    {% elif materia.percentual_usado <= 25 %}
+                                        <span class="text-danger">Mais um e reprova.</span>
+                                    {% else %}
+                                        <span class="text-danger">Reprovou por falta.</span>
+                                    {% endif %}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <a href="{% url 'restaurar_materia' materia.pk %}" 
+                                       class="btn btn-danger btn-sm">
+                                        <i class="bi bi-arrow-clockwise"></i> Restaurar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal para confirmação de remoção -->
+                    <div class="modal fade" id="removerMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="removerMateriaLabel-{{ materia.pk }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="removerMateriaLabel-{{ materia.pk }}">Remover Matéria</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>Tem certeza que deseja remover <strong>"{{ materia.nome }}"</strong>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="{% url 'remover_materia' materia.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Sim, remover</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center mt-5">
+            <p class="fs-5">Sua lixeira está vazia.</p>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+                <i class="bi bi-arrow-left"></i> Voltar às minhas matérias
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

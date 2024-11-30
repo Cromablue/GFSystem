@@ -141,7 +141,24 @@ def remover_materia(request, pk):
         materia.save()
         messages.success(request, "Matéria removida com sucesso!")
         return redirect('dashboard')
-    return render(request, 'remover_materia.html', {'materia': materia})
+    return render(request, 'dashboard.html', {'materia': materia})
+
+@login_required
+def lixeira(request):
+    materias = Materia.objects.filter(aluno=request.user, oculto=True)
+    return render(request, 'lixeira.html', {'materias': materias})
+
+@login_required
+def restaurar_materia(request, pk):  # Adicionado o parâmetro pk
+    try:
+        materia = Materia.objects.get(pk=pk, aluno=request.user, oculto=True)
+        materia.oculto = False
+        materia.save()
+        messages.success(request, "Matéria restaurada com sucesso!")
+    except Materia.DoesNotExist:
+        messages.error(request, "Matéria não encontrada ou você não tem permissão para restaurá-la.")
+    return redirect('lixeira')
+
 
 @login_required
 def finalizar_periodo(request):

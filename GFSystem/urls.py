@@ -13,6 +13,8 @@ urlpatterns = [
     path('adicionar/', views.adicionar_materia, name='adicionar_materia'),
     path('editar/<int:pk>/', views.editar_materia, name='editar_materia'),
     path('remover/<int:pk>/', views.remover_materia, name='remover_materia'),
-    path('materia/<int:pk>/anotacoes/', views.ver_anotacoes, name='ver_anotacoes'), #adicionado por ultimo
+    path('restaurar/<int:pk>/', views.restaurar_materia, name='restaurar_materia'),  # Nova rota
+    path('lixeira/', views.lixeira, name='lixeira'),  # Nova rota para a página de lixeira
+    path('materia/<int:pk>/anotacoes/', views.ver_anotacoes, name='ver_anotacoes'),
     path('materia/<int:id>/adicionar_faltas/', views.adicionar_faltas, name='adicionar_faltas'),
 ]
