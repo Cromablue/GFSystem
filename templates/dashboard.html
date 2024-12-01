@@ -28,7 +28,6 @@
                                             </svg>
                                             </i>
                                         </a>
-                                        
                                     </h5>
                                 </div>
                                 {% if materia.descricao %}
@@ -40,7 +39,6 @@
                                     <strong>Faltas:</strong> {{ materia.faltas }}
                                     <p><strong>Saldo de faltas utilizado:</strong></p> 
                                     <div class="progress">
-                                        
                                         <div class="progress-bar progress-bar-striped progress-bar-animated
                                             {% if materia.percentual_faltas_usadas <= 40 %}bg-success
                                             {% elif materia.percentual_faltas_usadas <= 60 %}bg-warning
@@ -78,49 +76,62 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-journal-check" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                                             <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
-                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
                                         </svg>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Modal para confirmação de remoção -->
-                    <div class="modal fade" id="removerMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="removerMateriaLabel-{{ materia.pk }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="removerMateriaLabel-{{ materia.pk }}">Remover Matéria</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <p>Tem certeza que deseja remover <strong>"{{ materia.nome }}"</strong>?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <form method="POST" action="{% url 'remover_materia' materia.pk %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Sim, remover</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    </form>
-                                </div>
+                {% endif %}
+                <!-- Modal de Remoção -->
+                <div class="modal fade" id="removerMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="removerMateriaModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="removerMateriaModalLabel">Confirmar Remoção</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja remover a matéria "<strong>{{ materia.nome }}</strong>"? Voce ainda poderá restaurá-lo na lixeira.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form action="{% url 'remover_materia' materia.pk %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Remover</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                {% endif %}                
+                </div>
+                <!-- Modal de Finalizar o período -->
+                <div class="modal fade" id="finalizarPeriodoModal" tabindex="-1" aria-labelledby="finalizarPeriodoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="finalizarPeriodoModalLabel">Finalizar Período</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Tem certeza de que deseja finalizar o período? Essa ação não poderá ser desfeita.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form action="{% url 'finalizar_periodo' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Finalizar Período</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
             {% endfor %}
-            <div class="d-flex justify-content-end mb-4">
-                <a href="{% url 'finalizar_periodo' %}" id="finalizar_periodo" class="btn btn-danger btn-center fw-bold shadow-sm border-0 transition-all">
-                    <i class="bi bi-flag-checkered"></i> Finalizar Período
-                </a>
-            </div>
         </div>
     {% else %}
-        <div class="text-center mt-5">
-            <p class=" fs-5">Você ainda não adicionou nenhuma matéria.</p>
-            <a href="{% url 'adicionar_materia' %}" class="btn btn-primary btn-lg shadow-sm border-0 transition-all">
-                <i class="bi bi-plus-circle"></i> Adicionar Matéria
-            </a>
+        <div class="alert alert-info text-center" role="alert">
+            <strong>Ainda não há matérias cadastradas.</strong>
         </div>
     {% endif %}
 </div>

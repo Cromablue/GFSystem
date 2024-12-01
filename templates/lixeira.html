@@ -55,15 +55,44 @@
                                     {% endif %}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mt-4">
-                                    <a href="{% url 'restaurar_materia' materia.pk %}" 
-                                       class="btn btn-danger btn-sm">
+                                    <a href="#" 
+                                        class="btn btn-danger btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#restaurarMateriaModal-{{ materia.pk }}">
                                         <i class="bi bi-arrow-clockwise"></i> Restaurar
                                     </a>
+                                    <!-- chama o modal pra remover de vez a materia -->
+                                    <button class="btn btn-danger btn-sm" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#removerMateriaModal-{{ materia.pk }}" 
+                                            aria-label="Remover matéria">
+                                        <i class="bi bi-trash-fill"></i> Remover
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <!-- Modal para confirmação de restauração -->
+                    <div class="modal fade" id="restaurarMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="restaurarMateriaLabel-{{ materia.pk }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="restaurarMateriaLabel-{{ materia.pk }}">Restaurar Matéria</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>Tem certeza que deseja restaurar <strong>"{{ materia.nome }}"</strong>? A matéria ficará visível novamente.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="POST" action="{% url 'restaurar_materia' materia.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success">Sim, restaurar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Modal para confirmação de remoção -->
                     <div class="modal fade" id="removerMateriaModal-{{ materia.pk }}" tabindex="-1" aria-labelledby="removerMateriaLabel-{{ materia.pk }}" aria-hidden="true">
                         <div class="modal-dialog">
@@ -73,7 +102,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <p>Tem certeza que deseja remover <strong>"{{ materia.nome }}"</strong>?</p>
+                                    <p>Tem certeza que deseja excluir permanentemente <strong>"{{ materia.nome }}"</strong>? Esta acão não pode ser desfeita.</p>
                                 </div>
                                 <div class="modal-footer">
                                     <form method="POST" action="{% url 'remover_materia' materia.pk %}">
@@ -88,10 +117,11 @@
                 {% endif %}
             {% endfor %}
         </div>
+
     {% else %}
         <div class="text-center mt-5">
             <p class="fs-5">Sua lixeira está vazia.</p>
-            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">
+            <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg rounded-5">
                 <i class="bi bi-arrow-left"></i> Voltar às minhas matérias
             </a>
         </div>
