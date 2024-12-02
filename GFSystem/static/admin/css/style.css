@@ -11,9 +11,14 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width: 100%;
     background: #f8f9fa; /* Fundo claro padrão */
     color: #000; /* Texto escuro padrão */
     transition: background 0.5s ease, color 0.5s ease;
+}
+
+.content {
+    flex-grow: 1;
 }
 
 
@@ -29,7 +34,6 @@ body.dark-mode .card {
     box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
     transition: background-color 0.5s ease, color 0.5s ease;
 }
-
 
 /* GRADIENTES */
 body.gradient-custom {
@@ -185,6 +189,7 @@ footer {
     transition: background-color 0.5s ease, color 0.5s ease;
     bottom: 0;
     width: 100%;
+    padding: 1rem 0;
 }
 
 body.dark-mode footer {
