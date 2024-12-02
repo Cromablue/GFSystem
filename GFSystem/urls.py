@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     # Rotas públicas
-    path('', views.login_view, name='login'),
+    path('', views.home, name='home'),  # Página inicial
+    path('login/', views.login_view, name='login'),
     path('cadastro/', views.cadastro, name='cadastro'),
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-periodo/', views.finalizar_periodo, name='finalizar_periodo'),

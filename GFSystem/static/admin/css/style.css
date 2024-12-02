@@ -16,6 +16,7 @@ body {
     transition: background 0.5s ease, color 0.5s ease;
 }
 
+
 /* MODO ESCURO */
 body.dark-mode {
     background: #121212; /* Fundo escuro */
@@ -51,6 +52,9 @@ body.dark-mode.gradient-custom {
 
 /* NAVBAR */
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     background-color: #003366; /* Azul escuro */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.5s ease, color 0.5s ease;
@@ -178,7 +182,6 @@ footer {
     color: #000;
     box-shadow: 0 5px 6px rgba(0, 0, 0, 0.268);
     transition: background-color 0.5s ease, color 0.5s ease;
-    position: fixed;
     bottom: 0;
     width: 100%;
 }
@@ -229,4 +232,40 @@ body.dark-mode .modal-header {
 
 body.dark-mode .modal-header .btn-close {
     filter: invert(1);
+}
+
+/* Carousel styling */
+#introCarousel,
+.carousel-inner,
+.carousel-item,
+.carousel-item.active {
+  height: 100vh;
+}
+
+.carousel-item:nth-child(1) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.carousel-item:nth-child(2) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/77.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.carousel-item:nth-child(3) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/78.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* Height for devices larger than 576px */
+@media (min-width: 992px) {
+  #introCarousel {
+    margin-top: -58.59px;
+  }
 }

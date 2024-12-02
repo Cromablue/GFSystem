@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
-
+#da uma olhada ba biblioteca datetime
 FALTAS_PERMITIDAS = 0.25  # Configurável
 
 class Materia(models.Model):

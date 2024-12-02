@@ -9,8 +9,12 @@ from .models import Materia
 from django.utils import timezone
 import re
 
+#fatmodels -> slin views
 
-# Página inicial (dashboard)
+# Página inicial 
+def home(request):
+    return render(request, 'index.html') 
+
 def cadastro(request):
     if request.method == "POST":
         # Coletando os dados do formulário
@@ -57,7 +61,6 @@ def cadastro(request):
 
     return render(request, 'cadastro.html')
 
-@login_required
 def dashboard(request):
     # Obter ano e semestre atuais
     ano_atual = str(timezone.now().year)
@@ -98,7 +101,7 @@ def logout_view(request):
     return redirect('login')
 
 # Adicionar matéria
-@login_required
+
 def adicionar_materia(request):
     if request.method == 'POST':
         form = MateriaForm(request.POST, is_edit=True)
@@ -117,7 +120,7 @@ def adicionar_materia(request):
 
 
 # Editar matéria
-@login_required
+
 def editar_materia(request, pk):
     materia = get_object_or_404(Materia, pk=pk)
 
@@ -132,7 +135,7 @@ def editar_materia(request, pk):
     return render(request, 'editar_materia.html', {'form': form})
 
 # Remover matéria
-@login_required
+
 def remover_materia(request, pk):
     materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
     if request.method == 'POST':
@@ -143,12 +146,11 @@ def remover_materia(request, pk):
         return redirect('dashboard')
     return render(request, 'dashboard.html', {'materia': materia})
 
-@login_required
+
 def lixeira(request):
     materias = Materia.objects.filter(aluno=request.user, oculto=True)
     return render(request, 'lixeira.html', {'materias': materias})
 
-@login_required
 def restaurar_materia(request, pk):  # Adicionado o parâmetro pk
     try:
         materia = Materia.objects.get(pk=pk, aluno=request.user, oculto=True)
@@ -160,7 +162,6 @@ def restaurar_materia(request, pk):  # Adicionado o parâmetro pk
     return redirect('lixeira')
 
 
-@login_required
 def finalizar_periodo(request):
     if request.method == 'POST':
         ano = request.POST.get('ano')
@@ -195,7 +196,6 @@ def adicionar_faltas(request, id):
     materia.save()  # Salva a alteração no banco de dados
     return redirect('dashboard')  # Redireciona de volta para a página de Dashboard
 
-@login_required
 def ver_anotacoes(request, pk):
     materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
     
