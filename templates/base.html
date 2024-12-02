@@ -21,13 +21,14 @@
     {% include 'partials/header.html' %}
     
     <!-- Conteúdo principal -->
-    <main class="content flex-grow-1 container-fluid mt-0">
+    <main class="content flex-grow-1 container-fluid h-100 w-100">
         {% block content %} {% endblock %}
     </main>
     <!-- Link para o app.js -->
     <script src="{% static 'admin/js/app.js' %}"></script>    
     
     <!-- Rodapé -->
-    {% include 'partials/footer.html' %}
+    
 </body>
+{% include 'partials/footer.html' %}
 </html>

@@ -61,7 +61,8 @@ body.dark-mode.gradient-custom {
 }
 
 body.dark-mode .navbar {
-    background-color: #212529; /* Fundo escuro para navbar */
+     /* Fundo escuro para navbar */
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 #botao-navbar {

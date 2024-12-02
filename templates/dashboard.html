@@ -38,7 +38,7 @@
                                 <p class="mb-2">
                                     <strong>Faltas:</strong> {{ materia.faltas }}
                                     <p><strong>Saldo de faltas utilizado:</strong></p> 
-                                    <div class="progress">
+                                    <div class="progress" style="height: 22px;">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated
                                             {% if materia.percentual_faltas_usadas <= 40 %}bg-success
                                             {% elif materia.percentual_faltas_usadas <= 60 %}bg-warning
@@ -48,8 +48,7 @@
                                             style="width: {{ materia.percentual_faltas_usadas|floatformat:0 }}%;" 
                                             aria-valuenow="{{ materia.percentual_faltas_usadas|floatformat:0 }}" 
                                             aria-valuemin="0" 
-                                            aria-valuemax="">
-                                            {{ materia.percentual_faltas_usadas|floatformat:2 }}%
+                                            aria-valuemax="">&nbsp;{{ materia.percentual_faltas_usadas|floatformat:2 }}%
                                         </div>
                                     </div>
                                 </p>
@@ -72,7 +71,7 @@
                                         <i class="bi bi-plus-circle"></i> Faltei
                                     </a>
                                     <a href="{% url 'ver_anotacoes' materia.pk %}" class="btn btn-primary btn-sm transition-all">
-                                        <i class="bi bi-journal-text"></i> Anotações 
+                                        <i class="bi bi-journal-text"></i> Anotações&ensp;
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-journal-check" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                                             <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
@@ -96,9 +95,9 @@
                                 Tem certeza de que deseja remover a matéria "<strong>{{ materia.nome }}</strong>"? Voce ainda poderá restaurá-lo na lixeira.
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <form action="{% url 'remover_materia' materia.pk %}" method="post" class="d-inline">
                                     {% csrf_token %}
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-danger">Remover</button>
                                 </form>
                             </div>
@@ -117,9 +116,9 @@
                                 <p>Tem certeza de que deseja finalizar o período? Essa ação não poderá ser desfeita.</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 <form action="{% url 'finalizar_periodo' %}" method="post">
                                     {% csrf_token %}
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-danger">Finalizar Período</button>
                                 </form>
                             </div>
