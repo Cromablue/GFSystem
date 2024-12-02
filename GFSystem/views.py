@@ -210,4 +210,35 @@ def ver_anotacoes(request, pk):
     return render(request, 'ver_anotacoes.html', context)
 
 def perfil(request):
-    return render(request, 'perfil.html')
+    user = request.user
+    # Dados adicionais, caso precise exibir mais informações
+    return render(request, 'perfil.html', {'user': user})
+
+def edit_profile(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+
+        # Validação dos campos
+        if not username or not email:
+            messages.error(request, "Os campos 'Usuário' e 'Email' são obrigatórios.")
+            return redirect('edit_profile')
+
+        try:
+            # Atualizar informações do usuário
+            user = request.user
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.username = username
+            user.save()
+
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('profile')  # Redirecione para a página de perfil
+        except Exception as e:
+            messages.error(request, f"Erro ao atualizar perfil: {str(e)}")
+            return redirect('edit_profile')
+
+    return render(request, 'edit_profile.html')  # Opcional: pode ser alterado se o modal for usado
