@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg " id="navbar">
+<nav class="navbar navbar-expand-lg {% if request.path == '/' %} bg-opacity-10  {% endif %}" id="navbar">
     <div class="container">
         <a class="navbar-brand" href="/" id="botao-navbar">GFSystem</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
                 <!-- Exibir botão "Finalizar Período" somente no Dashboard -->
                 {% if request.path == '/dashboard/' or request.path == '/finalizar-periodo/'%}
                     <li class="nav-item" role="presentation">
-                        <button class="text-white nav-link rounded-5" 
+                        <button class="text-bg-danger nav-link rounded-5" 
                             data-bs-toggle="modal" 
                             data-bs-target="#finalizarPeriodoModal">
                             Finalizar Período
@@ -45,8 +45,9 @@
                         <a class="text-white nav-link rounded-5 {% if request.path == '/lixeira/' %}active{% endif %}" href="/lixeira" aria-selected="false">Lixeira</a>
                     </li>
                 {% endif %}
-                
 
+                <li class="nav-item" role="presentation">
+                    <a class="text-white nav-link rounded-5 {% if request.path == '/perfil/' %}active{% endif %}" href="/perfil" aria-selected="false">Perfil</a>
                 <li class="nav-item" role="presentation">
                     <button id="toggle-dark-mode" class="nav-link rounded-5 bg-transparent border-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">

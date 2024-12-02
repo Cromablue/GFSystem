@@ -208,3 +208,6 @@ def ver_anotacoes(request, pk):
 
     context = {'materia': materia}
     return render(request, 'ver_anotacoes.html', context)
+
+def perfil(request):
+    return render(request, 'perfil.html')

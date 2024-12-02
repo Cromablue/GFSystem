@@ -8,6 +8,7 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-periodo/', views.finalizar_periodo, name='finalizar_periodo'),
+    path('perfil/', views.perfil, name='perfil'), #adicionando o perfil
 
     # Rotas protegidas
     path('dashboard/', views.dashboard, name='dashboard'),
