@@ -223,24 +223,27 @@ def meus_periodos(request):
     """
     Exibe as matérias finalizadas de um período específico.
     """
+    anos = (
+        Materia.objects.filter(aluno=request.user, finalizado=True)
+        .values_list('ano', flat=True)
+        .distinct()
+        .order_by('ano')
+    )
+
+    materias = None
     if request.method == 'POST':
         ano = request.POST.get('ano')
         semestre = request.POST.get('semestre')
 
-        # Filtrar matérias finalizadas do período selecionado
-        materias = Materia.objects.filter(
-            aluno=request.user,
-            finalizado=True,
-            semestre=semestre,
-            ano=ano
-        )
-        if not materias.exists():
-            messages.warning(request, "Nenhuma matéria encontrada para o período selecionado.")
-    else:
-        materias = None
-
-    # Recuperar anos disponíveis para exibição no modal
-    anos = Materia.objects.filter(aluno=request.user, finalizado=True).values_list('ano', flat=True).distinct()
+        if ano and semestre:
+            materias = Materia.objects.filter(
+                aluno=request.user,
+                finalizado=True,
+                semestre=semestre,
+                ano=ano,
+            )
+            if not materias.exists():
+                messages.warning(request, "Nenhuma matéria encontrada para o período selecionado.")
 
     return render(request, 'meus_periodos.html', {
         'materias': materias,

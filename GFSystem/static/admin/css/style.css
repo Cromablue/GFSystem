@@ -28,6 +28,12 @@ body.dark-mode {
     color: #ffffff; /* Texto claro */
 }
 
+body.dark-mode .list-group-item{
+    background: #1e1e1e94; /* Fundo escuro */
+    color: #fff; /* Texto claro */
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+
 body.dark-mode .card {
     background-color: #343a40;
     color: #fff;
@@ -44,7 +50,7 @@ body.gradient-custom {
 
 body.dark-mode.gradient-custom {
     background: linear-gradient(-45deg, #232526, #414345, #2c3e50, #4b79a1, #283048);
-    background-size: 400% 400%;
+    background-size: 700% 700%;
     animation: gradientBG 10s ease infinite;
 }
 

@@ -18,11 +18,7 @@
                     </li>    
                     <!-- Adicionar botão "Meus Períodos pra ativar um modal -->
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link rounded-5" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#meusPeriodosModal">
-                            Meus Períodos Finalizados
-                        </button>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/meus_periodos/' %}active{% endif %}" href="{% url 'meus_periodos' %}" aria-selected="false">Meus Periodos</a>
                     </li>                              
                 {% endif %}
 

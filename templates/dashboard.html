@@ -18,7 +18,7 @@
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#removerMateriaModal-{{ materia.pk }}">
                                                 <i class="bi bi-trash">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#dc3545" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
                                                     </svg>
                                                 </i>
@@ -137,36 +137,7 @@
     <div class="modal fade" id="meusPeriodosModal" tabindex="-1" aria-labelledby="meusPeriodosModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="meusPeriodosModalLabel">Meus Períodos Finalizados</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{% url 'meus_periodos' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="ano" class="form-label">Ano</label>
-                            <select id="ano" name="ano" class="form-select" required>
-                                <option value="" selected disabled>Selecione o Ano</option>
-                                {% for ano in anos %}
-                                    <option value="{{ ano }}">{{ ano }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="semestre" class="form-label">Semestre</label>
-                            <select id="semestre" name="semestre" class="form-select" required>
-                                <option value="" selected disabled>Selecione o Semestre</option>
-                                <option value="1">1º Semestre</option>
-                                <option value="2">2º Semestre</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-success">Buscar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>    
+    </div>
+    
 </div>
 {% endblock %}
