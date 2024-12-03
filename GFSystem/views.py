@@ -163,9 +163,10 @@ def restaurar_materia(request, pk):  # Adicionado o parâmetro pk
 
 
 def finalizar_periodo(request):
+    from datetime import datetime
     if request.method == 'POST':
-        ano = request.POST.get('ano')
-        semestre = request.POST.get('semestre')
+        ano = str(datetime.now().year)
+        semestre = '1' if datetime.now().month <= 6 else '2'
         
         # Filtra as matérias do usuário logado que correspondem ao ano e semestre selecionados
         materias = Materia.objects.filter(
@@ -175,8 +176,8 @@ def finalizar_periodo(request):
         )
         
         if materias.exists():
-            # Deleta as matérias do período selecionado
-            materias.delete()
+            # muda o status de todas as matérias do período selecionado para "finalizado"
+            materias.update(finalizado=True)
             messages.success(request, f"Período {semestre}/{ano} finalizado com sucesso!")
         else:
             messages.error(request, "Nenhuma matéria encontrada para o período selecionado.")

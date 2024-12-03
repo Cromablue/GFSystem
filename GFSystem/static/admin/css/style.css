@@ -183,7 +183,7 @@ body.dark-mode input::placeholder {
 
 /* RODAPÉ */
 footer {
-    background-color: rgba(207, 207, 207, 0.753); /* Fundo claro */
+    background-color: rgba(0, 0, 0, 0.753); /* Fundo claro */
     color: #000;
     box-shadow: 0 5px 6px rgba(0, 0, 0, 0.268);
     transition: background-color 0.5s ease, color 0.5s ease;

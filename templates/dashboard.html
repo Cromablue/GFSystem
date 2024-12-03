@@ -8,7 +8,7 @@
     {% if materias %}
         <div class="row g-4">
             {% for materia in materias %}
-                {% if not materia.oculto %}
+                {% if not materia.oculto and not materia.finalizado %}
                     <div class="col-md-6 col-lg-4">
                         <div id="dashboard-card" class="card h-100 shadow-lg border-0 rounded-3 transition-transform hover:scale-105">
                             <div class="card-body">
