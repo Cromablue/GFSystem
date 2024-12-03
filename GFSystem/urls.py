@@ -10,6 +10,7 @@ urlpatterns = [
     path('finalizar-periodo/', views.finalizar_periodo, name='finalizar_periodo'),
     path('perfil/', views.perfil, name='perfil'), #adicionando o perfil
     path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('meus-periodos/', views.meus_periodos, name='meus_periodos'),
 
     # Rotas protegidas
     path('dashboard/', views.dashboard, name='dashboard'),

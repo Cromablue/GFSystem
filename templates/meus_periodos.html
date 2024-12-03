@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">Matérias Finalizadas</h2>
+
+    {% if materias %}
+        <ul class="list-group">
+            {% for materia in materias %}
+                <li class="list-group-item">
+                    <strong>{{ materia.nome }}</strong>
+                    <br>
+                    Semestre: {{ materia.semestre }}
+                    <br>
+                    Ano: {{ materia.ano }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhuma matéria encontrada para o período selecionado.</p>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Voltar ao Dashboard</a>
+</div>
+{% endblock %}

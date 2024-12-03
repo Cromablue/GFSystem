@@ -14,13 +14,17 @@
                             data-bs-toggle="modal" 
                             data-bs-target="#finalizarPeriodoModal">
                             Finalizar Período
-                    </button>
-                    </li>                
-                {% endif %}
-
+                        </button>
+                    </li>    
+                    <!-- Adicionar botão "Meus Períodos pra ativar um modal -->
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/' %}active{% endif %}" href="/" aria-selected="false">Home</a>
-                    </li>
+                        <button class="nav-link rounded-5" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#meusPeriodosModal">
+                            Meus Períodos Finalizados
+                        </button>
+                    </li>                              
+                {% endif %}
 
                     <li class="nav-item" role="presentation">
                         <a class="text-white nav-link rounded-5 {% if request.path == '/dashboard/' %}active{% endif %}" href="/dashboard" aria-selected="true">Minhas Matérias</a>
@@ -45,10 +49,13 @@
                         <a class="text-white nav-link rounded-5 {% if request.path == '/lixeira/' %}active{% endif %}" href="/lixeira" aria-selected="false">Lixeira</a>
                     </li>
                 {% endif %}
-
-                <li class="nav-item" role="presentation">
-                    <a class="text-white nav-link rounded-5 {% if request.path == '/perfil/' %}active{% endif %}" href="/perfil" aria-selected="false">Perfil</a>
-                <li class="nav-item" role="presentation">
+                
+                    <li class="nav-item" role="presentation">
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/perfil/' %}active{% endif %}" href="/perfil" aria-selected="false">Perfil</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/' %}active{% endif %}" href="/" aria-selected="false">Home</a>
+                    </li>
                     <button id="toggle-dark-mode" class="nav-link rounded-5 bg-transparent border-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
                             <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
