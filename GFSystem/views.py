@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from datetime import datetime
-from .forms import UserRegisterForm, MateriaForm
-from .models import Materia
+from .forms import UserRegisterForm, MateriaForm, UserProfileForm, UserForm 
+from .models import Materia, UserProfile
 from django.contrib.auth.models import User
 import re
 
@@ -68,6 +68,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 
 # Dashboard
 @login_required
@@ -183,29 +184,57 @@ def finalizar_periodo(request):
 # Perfil do usuário
 @login_required
 def perfil(request):
+    user = request.user
     return render(request, 'perfil.html', {'user': request.user})
 
 # Editar perfil
 @login_required
 def edit_profile(request):
-    if request.method == 'POST':
-        user = request.user
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        user.username = request.POST.get('username')
+    user = request.user
+    profile, created = UserProfile.objects.get_or_create(user=user)
 
-        if not user.username or not user.email:
-            messages.error(request, "Os campos 'Usuário' e 'Email' são obrigatórios.")
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        telefone = request.POST.get('telefone')
+        endereco = request.POST.get('endereco')
+        aniversario = request.POST.get('aniversario')
+
+        errors = []
+
+        # Validações
+        if not username.isalnum():
+            errors.append("O nome de usuário deve conter apenas letras e números.")
+        if User.objects.filter(username=username).exclude(pk=user.pk).exists():
+            errors.append("Este nome de usuário já está em uso.")
+        if User.objects.filter(email=email).exclude(pk=user.pk).exists():
+            errors.append("Este email já está em uso.")
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
             return redirect('edit_profile')
 
+        # Atualizar informações do User e UserProfile
+        user.username = username
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
         user.save()
+
+        profile.telefone = telefone
+        profile.endereco = endereco
+        profile.aniversario = aniversario
+        if 'foto' in request.FILES:
+            profile.foto = request.FILES['foto']
+        profile.save()
+
         messages.success(request, "Perfil atualizado com sucesso!")
         return redirect('perfil')
 
-    return render(request, 'edit_profile.html')
-
-
+    return render(request, 'edit_profile.html', {'user': user, 'profile': profile})
 # Adicionar faltas
 @login_required
 def adicionar_faltas(request, id):

@@ -1,4 +1,4 @@
-from .models import Materia
+from .models import Materia, UserProfile
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -39,7 +39,9 @@ class MateriaForm(forms.ModelForm):
 
         
 class UserRegisterForm(UserCreationForm):
+    username = forms.CharField(required=True)
     email = forms.EmailField(required=True)
+    senha = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -48,3 +50,24 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     pass
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome de Usuário'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primeiro Nome'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Último Nome'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        }
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['telefone', 'endereco', 'aniversario', 'foto']
+        widgets = {
+            'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefone'}),
+            'endereco': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Endereço'}),
+            'aniversario': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }

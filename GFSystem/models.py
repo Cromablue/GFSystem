@@ -4,6 +4,17 @@ from django.core.exceptions import ValidationError
 #da uma olhada ba biblioteca datetime
 FALTAS_PERMITIDAS = 0.25  # Configurável
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    telefone = models.CharField(max_length=20, blank=True)
+    endereco = models.CharField(max_length=100, blank=True)
+    foto = models.ImageField(upload_to='user_photos/', blank=True, null=True)  # Define onde a imagem será salva
+    aniversario = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+    
 class Materia(models.Model):
     DIAS_SEMANA = [
         ('SEG', 'Segunda-feira'),

@@ -1,170 +1,110 @@
 {% extends 'base.html' %}
 {% block title %}Perfil{% endblock %}
 {% block content %}
-<div class="container bootstrap snippets bootdey">
+<div class="container-xl px-4 mt-4">
+    <hr class="mt-0 mb-4">
     <div class="row">
-        <div class="profile-nav col-md-3">
-            <div class="panel">
-                <div class="user-heading round">
-                    <a href="#">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Avatar do usuário">
-                    </a>
-                    <h1>{{ user.get_full_name|default:user.username }}</h1>
-                    <p>{{ user.email }}</p>
-                </div>
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"> <i class="fa fa-user"></i> Perfil</a></li>
-                    <li><a href="#"> <i class="fa fa-calendar"></i> Atividades Recentes</a></li>
-                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal"> <i class="fa fa-edit"></i> Editar perfil</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="profile-info col-md-9">
-            <div class="panel">
-                <form>
-                    <textarea placeholder="O que está na sua mente hoje?" rows="2" class="form-control input-lg p-text-area"></textarea>
-                </form>
-                <footer class="panel-footer d-flex justify-content-between">
-                    <ul class="nav nav-pills">
-                        <li><a href="#"><i class="fa fa-map-marker"></i></a></li>
-                        <li><a href="#"><i class="fa fa-camera"></i></a></li>
-                        <li><a href="#"><i class="fa fa-film"></i></a></li>
-                        <li><a href="#"><i class="fa fa-microphone"></i></a></li>
-                    </ul>
-                    <button class="btn btn-warning">Postar</button>
-                </footer>
-            </div>
-            <div class="panel">
-                <div class="bio-graph-heading text-center">
-                    Insira aqui uma descrição ou citação pessoal.
-                </div>
-                <div class="panel-body bio-graph-info">
-                    <h1>Informações Pessoais</h1>
-                    <div class="row">
-                        <div class="bio-row">
-                            <p><span>Nome </span>: {{ user.first_name|default:"Não informado" }}</p>
-                        </div>
-                        <div class="bio-row">
-                            <p><span>Sobrenome </span>: {{ user.last_name|default:"Não informado" }}</p>
-                        </div>
-                        <div class="bio-row">
-                            <p><span>Email </span>: {{ user.email }}</p>
-                        </div>
-                        <div class="bio-row">
-                            <p><span>Usuário </span>: {{ user.username }}</p>
-                        </div>
-                    </div>
+        <!-- Profile Picture -->
+        <div class="col-xl-4">
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Foto de Perfil</div>
+                <div class="card-body text-center">
+                    <!-- Mostrar a foto do perfil ou uma imagem padrão -->
+                    <img 
+                        class="img-account-profile rounded-circle mb-2" 
+                        src="{{ profile.foto }}" 
+                        alt="Foto do Perfil" 
+                        style="width: 150px; height: 150px;"
+                    >
+                    <div class="small font-italic text-muted mb-4">JPG ou PNG de no máximo 5 MB</div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Modal de edição de perfil -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+        <!-- Account Details -->
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <div class="card-header">Detalhes da Conta</div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Nome de Usuário -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Nome de Usuário</label>
+                            <input 
+                                class="form-control" 
+                                id="inputUsername" 
+                                type="text" 
+                                name="username" 
+                                value="{{ user.username }}" 
+                                required>
+                        </div>
+                        <!-- Nome e Sobrenome -->
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">Primeiro Nome</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputFirstName" 
+                                    type="text" 
+                                    name="first_name" 
+                                    value="{{ user.first_name }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Último Nome</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputLastName" 
+                                    type="text" 
+                                    name="last_name" 
+                                    value="{{ user.last_name }}">
+                            </div>
+                        </div>
+                        <!-- Telefone e Aniversário -->
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPhone">Telefone</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputPhone" 
+                                    type="tel" 
+                                    name="telefone" 
+                                    value="{{ profile.telefone }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Aniversário</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputBirthday" 
+                                    type="date" 
+                                    name="aniversario" 
+                                    value="{{ profile.aniversario|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+                        <!-- Endereço -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEndereco">Endereço</label>
+                            <input 
+                                class="form-control" 
+                                id="inputEndereco" 
+                                type="text" 
+                                name="endereco" 
+                                value="{{ profile.endereco }}">
+                        </div>
+                        <!-- Foto -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputFoto">Foto de Perfil</label>
+                            <input 
+                                class="form-control" 
+                                id="inputFoto" 
+                                type="file" 
+                                name="foto">
+                        </div>
+                        <!-- Botão Salvar -->
+                        <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+                    </form>                    
+                </div>
             </div>
-            <form method="post" action="{% url 'edit_profile' %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="first_name" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="last_name" class="form-label">Sobrenome</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
-                    </div>
-                    <!-- Campo Nome de Usuário -->
-                <div class="mb-3">
-                    <label for="id_username" class="form-label">Nome de Usuário</label>
-                    <input 
-                        type="text" 
-                        id="id_username" 
-                        name="username" 
-                        class="form-control {% if messages %}is-invalid{% endif %}"
-                        placeholder="Digite seu nome de usuário" 
-                        value="{{ request.POST.username }}" 
-                        required>
-                    <div class="invalid-feedback">
-                        Nome de usuário não pode conter espaços ou caracteres especiais.
-                    </div>
-                </div>
-                
-                <!-- Campo Email -->
-                <div class="mb-3">
-                    <label for="id_email" class="form-label">Email</label>
-                    <input 
-                        type="email" 
-                        id="id_email" 
-                        name="email" 
-                        class="form-control {% if messages %}is-invalid{% endif %}"
-                        placeholder="Digite seu email" 
-                        value="{{ request.POST.email }}" 
-                        required>
-                    <div class="invalid-feedback">
-                        Por favor, insira um email válido.
-                    </div>
-                </div>
-
-                <!-- Campo Senha -->
-                <div class="mb-3">
-                    <label for="id_password1" class="form-label">Senha</label>
-                    <div class="input-group">
-                        <input 
-                            type="password" 
-                            id="id_password1" 
-                            name="password1" 
-                            class="form-control {% if messages %}is-invalid{% endif %}"
-                            placeholder="Crie sua senha" 
-                            required>
-                        <!-- Ícone de visibilidade da senha (alterar texto conforme seu CSV) -->
-                        <button type="button" class="btn btn-secondary" id="togglePassword1">
-                            <!-- Texto que será alterado pelo CSV -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-eye" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                                    </svg>
-                        </button>
-                    </div>
-                    <div class="invalid-feedback">
-                        A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.
-                    </div>
-                </div>
-
-                <!-- Requisitos de Senha -->
-                <div id="passwordRequirements" class="mb-3">
-                    <ul>
-                        <li id="minLength" class="text-danger">Deve ter pelo menos 8 caracteres</li>
-                        <li id="uppercase" class="text-danger">Deve incluir pelo menos uma letra maiúscula</li>
-                        <li id="number" class="text-danger">Deve incluir pelo menos um número</li>
-                        <li id="specialChar" class="text-danger">Deve incluir pelo menos um caractere especial (ex: @, #, $, etc.)</li>
-                    </ul>
-                </div>
-
-                <!-- Campo Confirmar Senha -->
-                <div class="mb-3">
-                    <label for="id_password2" class="form-label">Confirme a Senha</label>
-                    <input 
-                        type="password" 
-                        id="id_password2" 
-                        name="password2" 
-                        class="form-control {% if messages %}is-invalid{% endif %}"
-                        placeholder="Confirme sua senha" 
-                        required>
-                    <div class="invalid-feedback">
-                        As senhas não coincidem.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

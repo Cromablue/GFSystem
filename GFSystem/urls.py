@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     # Rotas públicas
@@ -8,8 +11,8 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('logout/', views.logout_view, name='logout'),
     path('finalizar-periodo/', views.finalizar_periodo, name='finalizar_periodo'),
-    path('perfil/', views.perfil, name='perfil'), #adicionando o perfil
-    path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('perfil/', views.perfil, name='perfil'),
+    path('perfil/editar/', views.edit_profile, name='edit_profile'),
     path('meus_periodos/', views.meus_periodos, name='meus_periodos'),
 
     # Rotas protegidas
@@ -22,3 +25,7 @@ urlpatterns = [
     path('materia/<int:pk>/anotacoes/', views.ver_anotacoes, name='ver_anotacoes'),
     path('materia/<int:id>/adicionar_faltas/', views.adicionar_faltas, name='adicionar_faltas'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
