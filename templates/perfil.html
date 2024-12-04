@@ -16,7 +16,7 @@
                         alt="Foto do Perfil" 
                         style="width: 150px; height: 150px;"
                     >
-                    <div class="small font-italic text-muted mb-4">JPG ou PNG de no máximo 5 MB</div>
+                    <div class="small font-italic text-muted mb-4">Foto de Perfil</div>
                 </div>
             </div>
         </div>
@@ -26,83 +26,40 @@
             <div class="card mb-4">
                 <div class="card-header">Detalhes da Conta</div>
                 <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <!-- Nome de Usuário -->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Nome de Usuário</label>
-                            <input 
-                                class="form-control" 
-                                id="inputUsername" 
-                                type="text" 
-                                name="username" 
-                                value="{{ user.username }}" 
-                                required>
+                    <!-- Nome de Usuário -->
+                    <div class="mb-3">
+                        <label class="small mb-1">Nome de Usuário:</label>
+                        <p class="form-control-static">{{ user.username }}</p>
+                    </div>
+                    <!-- Nome e Sobrenome -->
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small mb-1">Primeiro Nome:</label>
+                            <p class="form-control-static">{{ user.first_name }}</p>
                         </div>
-                        <!-- Nome e Sobrenome -->
-                        <div class="row gx-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputFirstName">Primeiro Nome</label>
-                                <input 
-                                    class="form-control" 
-                                    id="inputFirstName" 
-                                    type="text" 
-                                    name="first_name" 
-                                    value="{{ user.first_name }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputLastName">Último Nome</label>
-                                <input 
-                                    class="form-control" 
-                                    id="inputLastName" 
-                                    type="text" 
-                                    name="last_name" 
-                                    value="{{ user.last_name }}">
-                            </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1">Último Nome:</label>
+                            <p class="form-control-static">{{ user.last_name }}</p>
                         </div>
-                        <!-- Telefone e Aniversário -->
-                        <div class="row gx-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Telefone</label>
-                                <input 
-                                    class="form-control" 
-                                    id="inputPhone" 
-                                    type="tel" 
-                                    name="telefone" 
-                                    value="{{ profile.telefone }}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputBirthday">Aniversário</label>
-                                <input 
-                                    class="form-control" 
-                                    id="inputBirthday" 
-                                    type="date" 
-                                    name="aniversario" 
-                                    value="{{ profile.aniversario|date:'Y-m-d' }}">
-                            </div>
+                    </div>
+                    <!-- Telefone e Aniversário -->
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small mb-1">Telefone:</label>
+                            <p class="form-control-static">{{ profile.telefone }}</p>
                         </div>
-                        <!-- Endereço -->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputEndereco">Endereço</label>
-                            <input 
-                                class="form-control" 
-                                id="inputEndereco" 
-                                type="text" 
-                                name="endereco" 
-                                value="{{ profile.endereco }}">
+                        <div class="col-md-6">
+                            <label class="small mb-1">Aniversário:</label>
+                            <p class="form-control-static">{{ profile.aniversario|date:'d/m/Y' }}</p>
                         </div>
-                        <!-- Foto -->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputFoto">Foto de Perfil</label>
-                            <input 
-                                class="form-control" 
-                                id="inputFoto" 
-                                type="file" 
-                                name="foto">
-                        </div>
-                        <!-- Botão Salvar -->
-                        <button class="btn btn-primary" type="submit">Salvar Alterações</button>
-                    </form>                    
+                    </div>
+                    <!-- Endereço -->
+                    <div class="mb-3">
+                        <label class="small mb-1">Endereço:</label>
+                        <p class="form-control-static">{{ profile.endereco }}</p>
+                    </div>
+                    <!-- Botão Editar -->
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Editar Perfil</a>
                 </div>
             </div>
         </div>

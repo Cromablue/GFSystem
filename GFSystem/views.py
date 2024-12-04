@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from datetime import datetime
-from .forms import UserRegisterForm, MateriaForm, UserProfileForm, UserForm 
+from .forms import MateriaForm, UserProfileForm
 from .models import Materia, UserProfile
 from django.contrib.auth.models import User
 import re
@@ -184,58 +184,26 @@ def finalizar_periodo(request):
 # Perfil do usuário
 @login_required
 def perfil(request):
-    user = request.user
-    return render(request, 'perfil.html', {'user': request.user})
+    profile = request.user.profile
+    return render(request, 'perfil.html', {'profile': profile})
 
-# Editar perfil
 @login_required
 def edit_profile(request):
-    user = request.user
-    profile, created = UserProfile.objects.get_or_create(user=user)
+    profile = request.user.profile
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        telefone = request.POST.get('telefone')
-        endereco = request.POST.get('endereco')
-        aniversario = request.POST.get('aniversario')
-
-        errors = []
-
-        # Validações
-        if not username.isalnum():
-            errors.append("O nome de usuário deve conter apenas letras e números.")
-        if User.objects.filter(username=username).exclude(pk=user.pk).exists():
-            errors.append("Este nome de usuário já está em uso.")
-        if User.objects.filter(email=email).exclude(pk=user.pk).exists():
-            errors.append("Este email já está em uso.")
-
-        if errors:
-            for error in errors:
+        form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('perfil')
+        else:
+            for error in form.errors.values():
                 messages.error(request, error)
-            return redirect('edit_profile')
+    else:
+        form = UserProfileForm(instance=profile, user=request.user)
 
-        # Atualizar informações do User e UserProfile
-        user.username = username
-        user.email = email
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
-
-        profile.telefone = telefone
-        profile.endereco = endereco
-        profile.aniversario = aniversario
-        if 'foto' in request.FILES:
-            profile.foto = request.FILES['foto']
-        profile.save()
-
-        messages.success(request, "Perfil atualizado com sucesso!")
-        return redirect('perfil')
-
-    return render(request, 'edit_profile.html', {'user': user, 'profile': profile})
-# Adicionar faltas
+    return render(request, 'edit_profile.html', {'form': form, 'profile': profile})
 @login_required
 def adicionar_faltas(request, id):
     """

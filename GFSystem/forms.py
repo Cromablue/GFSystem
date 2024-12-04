@@ -50,24 +50,36 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     pass
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name', 'email']
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome de Usuário'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primeiro Nome'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Último Nome'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-        }
-
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['telefone', 'endereco', 'aniversario', 'foto']
-        widgets = {
-            'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefone'}),
-            'endereco': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Endereço'}),
-            'aniversario': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'foto': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-        }
+        fields = ['telefone', 'endereco', 'foto', 'aniversario']
+
+    username = forms.CharField(max_length=150)
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if user:
+            self.fields['username'].initial = user.username
+            self.fields['email'].initial = user.email
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        user = profile.user
+
+        # Atualizar os campos do User
+        user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        if commit:
+            user.save()
+            profile.save()
+        return profile

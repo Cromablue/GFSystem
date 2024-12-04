@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Editar Perfil{% endblock %}
+{% block content %}
+<div class="container-xl px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <!-- Profile Picture -->
+        <div class="col-xl-4">
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Foto de Perfil</div>
+                <div class="card-body text-center">
+                    <!-- Mostrar a foto do perfil ou uma imagem padrão -->
+                    <img 
+                        class="img-account-profile rounded-circle mb-2" 
+                        src="{{ profile.foto.url if profile.foto else '/static/images/default-profile.png' }}" 
+                        alt="Foto do Perfil" 
+                        style="width: 150px; height: 150px;"
+                    >
+                    <div class="small font-italic text-muted mb-4">JPG ou PNG de no máximo 5 MB</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Account Details -->
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <div class="card-header">Editar Detalhes da Conta</div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Nome de Usuário -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Nome de Usuário</label>
+                            <input 
+                                class="form-control" 
+                                id="inputUsername" 
+                                type="text" 
+                                name="username" 
+                                value="{{ form.username.value }}" 
+                                required>
+                        </div>
+                        <!-- Nome e Sobrenome -->
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">Primeiro Nome</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputFirstName" 
+                                    type="text" 
+                                    name="first_name" 
+                                    value="{{ form.first_name.value }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Último Nome</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputLastName" 
+                                    type="text" 
+                                    name="last_name" 
+                                    value="{{ form.last_name.value }}">
+                            </div>
+                        </div>
+                        <!-- Telefone e Aniversário -->
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPhone">Telefone</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputPhone" 
+                                    type="tel" 
+                                    name="telefone" 
+                                    value="{{ form.telefone.value }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Aniversário</label>
+                                <input 
+                                    class="form-control" 
+                                    id="inputBirthday" 
+                                    type="date" 
+                                    name="aniversario" 
+                                    value="{{ form.aniversario.value|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+                        <!-- Endereço -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEndereco">Endereço</label>
+                            <input 
+                                class="form-control" 
+                                id="inputEndereco" 
+                                type="text" 
+                                name="endereco" 
+                                value="{{ form.endereco.value }}">
+                        </div>
+                        <!-- Foto -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputFoto">Foto de Perfil</label>
+                            <input 
+                                class="form-control" 
+                                id="inputFoto" 
+                                type="file" 
+                                name="foto">
+                        </div>
+                        <!-- Botão Salvar -->
+                        <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

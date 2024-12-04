@@ -9,11 +9,45 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     telefone = models.CharField(max_length=20, blank=True)
     endereco = models.CharField(max_length=100, blank=True)
-    foto = models.ImageField(upload_to='user_photos/', blank=True, null=True)  # Define onde a imagem será salva
+    foto = models.ImageField(upload_to='user_photos/', blank=True, null=True)
     aniversario = models.DateField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
+
+    def update_profile(self, data, files):
+        """Atualiza o perfil do usuário."""
+        errors = []
+
+        # Atualiza informações do User
+        self.user.username = data.get('username', self.user.username)
+        self.user.email = data.get('email', self.user.email)
+        self.user.first_name = data.get('first_name', self.user.first_name)
+        self.user.last_name = data.get('last_name', self.user.last_name)
+
+        # Validações
+        if not self.user.username.isalnum():
+            errors.append("O nome de usuário deve conter apenas letras e números.")
+        if User.objects.filter(username=self.user.username).exclude(pk=self.user.pk).exists():
+            errors.append("Este nome de usuário já está em uso.")
+        if User.objects.filter(email=self.user.email).exclude(pk=self.user.pk).exists():
+            errors.append("Este email já está em uso.")
+
+        if errors:
+            raise ValidationError(errors)
+
+        # Atualiza informações do UserProfile
+        self.telefone = data.get('telefone', self.telefone)
+        self.endereco = data.get('endereco', self.endereco)
+        self.aniversario = data.get('aniversario', self.aniversario)
+        if 'foto' in files:
+            self.foto = files['foto']
+
+        # Salva User e UserProfile
+        self.user.save()
+        self.save()
+
     
 class Materia(models.Model):
     DIAS_SEMANA = [

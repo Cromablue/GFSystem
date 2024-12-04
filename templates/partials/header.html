@@ -23,34 +23,34 @@
                 {% endif %}
 
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/dashboard/' %}active{% endif %}" href="/dashboard" aria-selected="true">Minhas Matérias</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/dashboard/' %}active{% endif %}" href="{% url 'dashboard' %}" aria-selected="true">Minhas Matérias</a>
                     </li>
                     
                 {% if request.path == '/' or request.path == '/login/' or request.path == '/cadastro/' %}
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/login/' %}active{% endif %}" href="/login" aria-selected="false">Login</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/login/' %}active{% endif %}" href="{% url 'login' %}" aria-selected="false">Login</a>
                     </li>
                               
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/cadastro/' %}active{% endif %}" href="/cadastro" aria-selected="false">Cadastrar</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/cadastro/' %}active{% endif %}" href="{% url 'cadastro' %}" aria-selected="false">Cadastrar</a>
                     </li>
                 {% endif %}
 
                 {% if not request.path == '/' and not request.path == '/login/' and not request.path == '/cadastro/' %}
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/adicionar/' %}active{% endif %}" href="/adicionar/" aria-selected="false">Adicionar Matéria</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/adicionar/' %}active{% endif %}" href="{% url 'adicionar_materia' %}" aria-selected="false">Adicionar Matéria</a>
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/lixeira/' %}active{% endif %}" href="/lixeira" aria-selected="false">Lixeira</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/lixeira/' %}active{% endif %}" href="{% url 'lixeira' %}" aria-selected="false">Lixeira</a>
                     </li>
                 {% endif %}
                 
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/perfil/' %}active{% endif %}" href="/perfil" aria-selected="false">Perfil</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/perfil/' %}active{% endif %}" href="{% url 'perfil' %}" aria-selected="false">Perfil</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/' %}active{% endif %}" href="/" aria-selected="false">Home</a>
+                        <a class="text-white nav-link rounded-5 {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}" aria-selected="false">Home</a>
                     </li>
                     <button id="toggle-dark-mode" class="nav-link rounded-5 bg-transparent border-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
