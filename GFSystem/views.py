@@ -4,54 +4,43 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from datetime import datetime
-from .forms import MateriaForm, UserProfileForm
+from .forms import MateriaForm, UserProfileForm, UserRegistrationForm
 from .models import Materia, UserProfile
 from django.contrib.auth.models import User
 import re
 
-# Página inicial
+# Páginas Públicas
 def home(request):
+    """
+    Página inicial do sistema.
+    """
     return render(request, 'index.html')
 
-# Cadastro de usuário
+
 def cadastro(request):
+    """
+    Página de cadastro de usuários.
+    """
     if request.method == "POST":
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-
-        errors = []
-
-        # Validações
-        if not username.isalnum():
-            errors.append("O nome de usuário deve conter apenas letras e números.")
-        if User.objects.filter(username=username).exists():
-            errors.append("Este nome de usuário já está em uso.")
-        if User.objects.filter(email=email).exists():
-            errors.append("Este email já está em uso.")
-        if not email.endswith('.com'):
-            errors.append("O email deve conter .com")
-        
-        password_regex = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$'
-        if not re.match(password_regex, password1):
-            errors.append("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.")
-        if password1 != password2:
-            errors.append("As senhas não coincidem.")
-
-        if errors:
-            for error in errors:
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            messages.success(request, "Cadastro realizado com sucesso!")
+            return redirect('login')
+        else:
+            for error in form.errors.values():
                 messages.error(request, error)
-            return render(request, 'cadastro.html')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'cadastro.html', {'form': form})
 
-        User.objects.create_user(username=username, password=password1, email=email)
-        messages.success(request, "Cadastro realizado com sucesso!")
-        return redirect('login')
 
-    return render(request, 'cadastro.html')
-
-# Página de login
 def login_view(request):
+    """
+    Página de login de usuários.
+    """
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -64,15 +53,21 @@ def login_view(request):
 
     return render(request, 'login.html')
 
-# Página de logout
+
 def logout_view(request):
+    """
+    Faz logout do usuário e redireciona para a página de login.
+    """
     logout(request)
     return redirect('login')
 
 
-# Dashboard
+# Páginas Protegidas
 @login_required
 def dashboard(request):
+    """
+    Exibe as matérias ativas do semestre atual no Dashboard.
+    """
     ano_atual = str(datetime.now().year)
     semestre_atual = '1' if datetime.now().month <= 6 else '2'
 
@@ -85,9 +80,12 @@ def dashboard(request):
     )
     return render(request, 'dashboard.html', {'materias': materias})
 
-# Adicionar matéria
+
 @login_required
 def adicionar_materia(request):
+    """
+    Adiciona uma nova matéria para o usuário.
+    """
     if request.method == 'POST':
         form = MateriaForm(request.POST, is_edit=True)
         if form.is_valid():
@@ -101,9 +99,12 @@ def adicionar_materia(request):
         form = MateriaForm(is_edit=True)
     return render(request, 'adicionar_materia.html', {'form': form})
 
-# Editar matéria
+
 @login_required
 def editar_materia(request, pk):
+    """
+    Edita uma matéria existente.
+    """
     materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
     if request.method == 'POST':
         form = MateriaForm(request.POST, instance=materia, is_edit=True)
@@ -114,6 +115,19 @@ def editar_materia(request, pk):
     else:
         form = MateriaForm(instance=materia, is_edit=True)
     return render(request, 'editar_materia.html', {'form': form})
+
+
+@login_required
+def remover_materia(request, pk):
+    """
+    Remove (oculta) uma matéria do dashboard.
+    """
+    materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
+    if request.method == 'POST':
+        materia.oculto = True
+        materia.save()
+        messages.success(request, "Matéria removida com sucesso!")
+        return redirect('dashboard')
 
 def ver_anotacoes(request, pk):
     """
@@ -134,34 +148,32 @@ def ver_anotacoes(request, pk):
     context = {'materia': materia}
     return render(request, 'ver_anotacoes.html', context)
 
-# Remover matéria
-@login_required
-def remover_materia(request, pk):
-    materia = get_object_or_404(Materia, pk=pk, aluno=request.user)
-    if request.method == 'POST':
-        materia.oculto = True
-        materia.save()
-        messages.success(request, "Matéria removida com sucesso!")
-        return redirect('dashboard')
-
-# Lixeira
 @login_required
 def lixeira(request):
+    """
+    Exibe as matérias ocultas (lixeira).
+    """
     materias = Materia.objects.filter(aluno=request.user, oculto=True)
     return render(request, 'lixeira.html', {'materias': materias})
 
-# Restaurar matéria
+
 @login_required
 def restaurar_materia(request, pk):
+    """
+    Restaura uma matéria da lixeira.
+    """
     materia = get_object_or_404(Materia, pk=pk, aluno=request.user, oculto=True)
     materia.oculto = False
     materia.save()
     messages.success(request, "Matéria restaurada com sucesso!")
     return redirect('lixeira')
 
-# Finalizar período
+
 @login_required
 def finalizar_periodo(request):
+    """
+    Finaliza o período atual marcando todas as matérias como finalizadas.
+    """
     if request.method == 'POST':
         ano = str(datetime.now().year)
         semestre = '1' if datetime.now().month <= 6 else '2'
@@ -181,44 +193,11 @@ def finalizar_periodo(request):
     anos = Materia.objects.filter(aluno=request.user).values_list('ano', flat=True).distinct()
     return render(request, 'finalizar_periodo.html', {'anos': anos})
 
-# Perfil do usuário
-@login_required
-def perfil(request):
-    profile = request.user.profile
-    return render(request, 'perfil.html', {'profile': profile})
-
-@login_required
-def edit_profile(request):
-    profile = request.user.profile
-
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Perfil atualizado com sucesso!")
-            return redirect('perfil')
-        else:
-            for error in form.errors.values():
-                messages.error(request, error)
-    else:
-        form = UserProfileForm(instance=profile, user=request.user)
-
-    return render(request, 'edit_profile.html', {'form': form, 'profile': profile})
-@login_required
-def adicionar_faltas(request, id):
-    """
-    Incrementa as faltas de uma matéria específica em 2.
-    """
-    materia = get_object_or_404(Materia, id=id, aluno=request.user)
-    materia.faltas += 2  # Adiciona 2 faltas
-    materia.save()  # Salva a alteração no banco de dados
-    messages.success(request, f"Faltas adicionadas com sucesso para a matéria: {materia.nome}")
-    return redirect('dashboard')  # Redireciona para a página de Dashboard
 
 @login_required
 def meus_periodos(request):
     """
-    Exibe as matérias finalizadas de um período específico.
+    Exibe as matérias finalizadas de períodos anteriores.
     """
     anos = (
         Materia.objects.filter(aluno=request.user, finalizado=True)
@@ -246,3 +225,47 @@ def meus_periodos(request):
         'materias': materias,
         'anos': anos,
     })
+
+
+# Perfil do Usuário
+@login_required
+def perfil(request):
+    """
+    Exibe as informações do perfil do usuário.
+    """
+    profile = request.user.profile
+    return render(request, 'perfil.html', {'profile': profile})
+
+
+@login_required
+def edit_profile(request):
+    """
+    Permite a edição do perfil do usuário.
+    """
+    profile = request.user.profile
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso!")
+            return redirect('perfil')
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+    else:
+        form = UserProfileForm(instance=profile, user=request.user)
+
+    return render(request, 'edit_profile.html', {'form': form, 'profile': profile})
+
+
+@login_required
+def adicionar_faltas(request, id):
+    """
+    Incrementa as faltas de uma matéria específica.
+    """
+    materia = get_object_or_404(Materia, id=id, aluno=request.user)
+    materia.faltas += 2
+    materia.save()
+    messages.success(request, f"Faltas adicionadas com sucesso para a matéria: {materia.nome}")
+    return redirect('dashboard')

@@ -2,6 +2,7 @@ from .models import Materia, UserProfile
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+import re
 
 class MateriaForm(forms.ModelForm):
     DIAS_SEMANA = Materia.DIAS_SEMANA
@@ -38,14 +39,42 @@ class MateriaForm(forms.ModelForm):
             self.fields['anotacoes'].widget = forms.HiddenInput()  # Oculta o campo de anotações
 
         
-class UserRegisterForm(UserCreationForm):
-    username = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    senha = forms.CharField(widget=forms.PasswordInput)
+class UserRegistrationForm(forms.ModelForm):
+    password1 = forms.CharField(widget=forms.PasswordInput, label="Senha")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirmação de Senha")
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        errors = []
+
+        if not username.isalnum():
+            errors.append("O nome de usuário deve conter apenas letras e números.")
+        if User.objects.filter(username=username).exists():
+            errors.append("Este nome de usuário já está em uso.")
+        if User.objects.filter(email=email).exists():
+            errors.append("Este email já está em uso.")
+        if not email.endswith('.com'):
+            errors.append("O email deve conter .com")
+
+        password_regex = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$'
+        if not re.match(password_regex, password1):
+            errors.append("A senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.")
+        if password1 != password2:
+            errors.append("As senhas não coincidem.")
+
+        if errors:
+            raise forms.ValidationError(errors)
+
+        return cleaned_data
 
 class UserLoginForm(AuthenticationForm):
     pass
