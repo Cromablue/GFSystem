@@ -11,6 +11,8 @@ FALTAS_PERMITIDAS = 0.25  # Configurável
 # ----------------------------------------
 # Modelo UserProfile
 # ----------------------------------------
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     telefone = models.CharField(max_length=20, blank=True)
@@ -18,7 +20,8 @@ class UserProfile(models.Model):
     foto = models.ImageField(upload_to='user_photos/', blank=True, null=True)
     aniversario = models.DateField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-
+    first_name = models.CharField(max_length=30, blank=True) 
+    last_name = models.CharField(max_length=30, blank=True)  
     def __str__(self):
         return self.user.username
 
@@ -31,10 +34,12 @@ class UserProfile(models.Model):
         self.user.email = data.get('email', self.user.email)
 
         # Validações
-        if not self.user.username.isalnum():
-            errors.append("O nome de usuário deve conter apenas letras e números.")
+        if not self.user.username:
+            errors.append("O nome de usuário não pode estar vazio.")
+        
         if User.objects.filter(username=self.user.username).exclude(pk=self.user.pk).exists():
             errors.append("Este nome de usuário já está em uso.")
+        
         if User.objects.filter(email=self.user.email).exclude(pk=self.user.pk).exists():
             errors.append("Este email já está em uso.")
 
@@ -44,13 +49,20 @@ class UserProfile(models.Model):
         # Atualizar dados adicionais
         self.telefone = data.get('telefone', self.telefone)
         self.endereco = data.get('endereco', self.endereco)
-        self.aniversario = data.get('aniversario', self.aniversario)
+
+        # Manter o aniversário existente se o novo valor for vazio
+        aniversario_novo = data.get('aniversario')
+        if aniversario_novo:  # Se um novo aniversário for fornecido
+            self.aniversario = aniversario_novo
+
         if 'foto' in files:
             self.foto = files['foto']
 
         # Salvar alterações
         self.user.save()
         self.save()
+
+
 
 
 # Sinal para criar automaticamente o perfil do usuário

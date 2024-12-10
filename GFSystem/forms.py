@@ -82,22 +82,36 @@ class UserLoginForm(AuthenticationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['telefone', 'endereco', 'foto', 'aniversario']
+        fields = ['telefone', 'endereco', 'foto', 'aniversario', 'first_name', 'last_name']  # Adicione os campos aqui
 
     username = forms.CharField(max_length=150)
-    email = forms.EmailField()
-    first_name = forms.CharField(max_length=30, required=False)
-    last_name = forms.CharField(max_length=30, required=False)
+    email = forms.EmailField(max_length=254, required=False) 
+    telefone = forms.CharField(max_length=20, required=False)
+    aniversario = forms.DateField(required=False)
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields['username'].initial = user.username
-            self.fields['email'].initial = user.email
-            self.fields['first_name'].initial = user.first_name
-            self.fields['last_name'].initial = user.last_name
+        if self.user:
+            self.fields['username'].initial = self.user.username
+            self.fields['email'].initial = self.user.email
+            self.fields['first_name'].initial = self.user.first_name
+            self.fields['last_name'].initial = self.user.last_name
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError("O nome de usuário não pode estar vazio.")
+        if User.objects.filter(username=username).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("Este nome de usuário já está em uso.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("Este email já está em uso.")
+        return email
 
     def save(self, commit=True):
         profile = super().save(commit=False)
@@ -106,9 +120,14 @@ class UserProfileForm(forms.ModelForm):
         # Atualizar os campos do User
         user.username = self.cleaned_data['username']
         user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+        
+        # Salvar os campos adicionais no perfil
+        profile.first_name = self.cleaned_data['first_name']  # Salvar primeiro nome
+        profile.last_name = self.cleaned_data['last_name']    # Salvar último nome
+        
         if commit:
             user.save()
             profile.save()
+        
         return profile
+

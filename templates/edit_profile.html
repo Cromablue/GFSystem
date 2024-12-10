@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Editar Perfil{% endblock %}
 {% block content %}
+<!-- edit_profile.html -->
+
 <div class="container-xl px-4 mt-4">
     <hr class="mt-0 mb-4">
     <div class="row">
@@ -10,7 +12,6 @@
             <div class="card mb-4 mb-xl-0">
                 <div class="card-header">Foto de Perfil</div>
                 <div class="card-body text-center">
-                    <!-- Mostrar a foto do perfil ou uma imagem padrão -->
                     <img 
                         class="img-account-profile rounded-circle mb-2" 
                         src="{% if profile.foto %}{{ profile.foto.url }}{% else %}{% static 'admin/img/default.png' %}{% endif %}" 
@@ -18,7 +19,6 @@
                         style="width: 150px; height: 150px;"
                     >
                     <div class="small font-italic text-muted mb-4">JPG ou PNG de no máximo 5 MB</div>
-
                 </div>
             </div>
         </div>
@@ -34,12 +34,90 @@
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Nome de Usuário</label>
                             <input 
-                                class="form-control" 
+                                class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
                                 id="inputUsername" 
                                 type="text" 
                                 name="username" 
                                 value="{{ form.username.value }}" 
                                 required>
+                            {% for error in form.username.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmail">Email</label>
+                            <input 
+                                class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                                id="inputEmail" 
+                                type="email" 
+                                name="email" 
+                                value="{{ form.email.value }}" 
+                                required>
+                            {% for error in form.email.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!--Primeiro Nome-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputFirstName">Primeiro Nome</label>
+                            <input 
+                                class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" 
+                                id="inputFirstName" 
+                                type="text" 
+                                name="first_name" 
+                                value="{{ form.first_name.value }}" 
+                                required>
+                            {% for error in form.first_name.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Ultimo Nome-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputLastName">Ultimo Nome</label>
+                            <input 
+                                class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" 
+                                id="inputLastName" 
+                                type="text" 
+                                name="last_name" 
+                                value="{{ form.last_name.value }}" 
+                                required>
+                            {% for error in form.last_name.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Telefone -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputtelefone">Telefone</label>
+                            <input 
+                                class="form-control {% if form.telefone.errors %}is-invalid{% endif %}" 
+                                id="inputPhone" 
+                                type="text" 
+                                name="telefone" 
+                                value="{{ form.telefone.value }}" 
+                                required>
+                            {% for error in form.telefone.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Aniversário -->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputBirthday">Aniversário</label>
+                            <input 
+                                class="form-control {% if form.aniversario.errors %}is-invalid{% endif %}" 
+                                id="inputBirthday" 
+                                type="date" 
+                                name="aniversario" 
+                                value="{{ form.aniversario.value }}" 
+                                >
+                            {% for error in form.aniversario.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
                         </div>
                         <!-- Botão Salvar -->
                         <button class="btn btn-primary" type="submit">Salvar Alterações</button>
@@ -50,3 +128,4 @@
     </div>
 </div>
 {% endblock %}
+

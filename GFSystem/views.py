@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -6,8 +7,8 @@ from django.utils import timezone
 from datetime import datetime
 from .forms import MateriaForm, UserProfileForm, UserRegistrationForm
 from .models import Materia, UserProfile
-from django.contrib.auth.models import User
 import re
+
 
 # Páginas Públicas
 def home(request):
@@ -243,16 +244,17 @@ def edit_profile(request):
     Permite a edição do perfil do usuário.
     """
     profile = request.user.profile
-
+    
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
+        
         if form.is_valid():
-            form.save()
+            form.save()  # Salva todos os dados corretamente agora
             messages.success(request, "Perfil atualizado com sucesso!")
             return redirect('perfil')
-        else:
-            for error in form.errors.values():
-                messages.error(request, error)
+        
+        # Mensagens de erro serão tratadas no próprio formulário
+
     else:
         form = UserProfileForm(instance=profile, user=request.user)
 
