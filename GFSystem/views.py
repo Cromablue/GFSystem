@@ -113,7 +113,6 @@ def editar_materia(request, pk):
         form = MateriaForm(request.POST, instance=materia, is_edit=True)
         if form.is_valid():
             form.save()
-            messages.success(request, "Matéria editada com sucesso!")
             return redirect('dashboard')
     else:
         form = MateriaForm(instance=materia, is_edit=True)
@@ -131,6 +130,7 @@ def remover_materia(request, pk):
         materia.save()
         messages.success(request, "Matéria removida com sucesso!")
         return redirect('dashboard')
+
 
 def ver_anotacoes(request, pk):
     """
@@ -271,5 +271,4 @@ def adicionar_faltas(request, id):
     materia = get_object_or_404(Materia, id=id, aluno=request.user)
     materia.faltas += 2
     materia.save()
-    messages.success(request, f"Faltas adicionadas com sucesso para a matéria: {materia.nome}")
     return redirect('dashboard')

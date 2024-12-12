@@ -3,19 +3,74 @@
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    
     <div class="w-100" style="max-width: 600px;">
         <h1 class="text-center mb-4">Editar Matéria</h1>
         <form method="POST">
             {% csrf_token %}
+            
+            <!-- Campo Nome -->
             <div class="mb-3">
-                {{ form.as_p }}
+                <label for="id_nome" class="form-label">Nome</label>
+                <input 
+                    type="text" 
+                    id="id_nome" 
+                    name="nome" 
+                    class="form-control" 
+                    placeholder="Digite o nome da matéria" 
+                    value="{{ form.nome.value }}" 
+                    required>
+                {% for error in form.nome.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
             </div>
+
+            <!-- Campo Carga Horária -->
+            <div class="mb-3">
+                <label for="id_carga_horaria" class="form-label">Carga Horária</label>
+                <input 
+                    type="number" 
+                    id="id_carga_horaria" 
+                    name="carga_horaria" 
+                    class="form-control" 
+                    placeholder="Digite a carga horária" 
+                    value="{{ form.carga_horaria.value }}" 
+                    required>
+                {% for error in form.carga_horaria.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Campo Faltas -->
+            <div class="mb-3">
+                <label for="id_faltas" class="form-label">Faltas</label>
+                <input 
+                    type="number" 
+                    id="id_faltas" 
+                    name="faltas" 
+                    class="form-control" 
+                    placeholder="Digite o número de faltas" 
+                    value="{{ form.faltas.value }}" 
+                    required>
+                {% for error in form.faltas.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Campo Dias da Semana -->
+            <div class="mb-3">
+                <label for="id_dias_semana" class="form-label">Dias da Semana</label>
+                {{ form.dias_semana }}
+                {% for error in form.dias_semana.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Botões -->
             <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-danger w-50" onclick="window.location.href = {% url 'dashboard' %}">
-                Cancelar
-            </button>
-            <button type="submit" class="btn btn-success w-50">Salvar Alterações</button>
+                <button type="button" class="btn btn-danger w-50" onclick="window.location.href = '{% url 'dashboard' %}'">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-success w-50">Salvar Alterações</button>
             </div>
         </form>
     </div>
