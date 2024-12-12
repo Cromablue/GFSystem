@@ -61,10 +61,13 @@ def login_view(request):
 
 def logout_view(request):
     """
-    Faz logout do usuário e redireciona para a página de login.
+    Faz logout do usuário e redireciona para a página inicial ou de login.
     """
-    logout(request)
+    if request.method == "GET":
+        logout(request)
+        messages.success(request, "Você saiu com sucesso!")
     return redirect('login')
+
 
 
 # Páginas Protegidas

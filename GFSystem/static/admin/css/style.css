@@ -110,6 +110,25 @@ form {
     transition: background 0.5s ease, color 0.5s ease;
 }
 
+.logout-form {
+    /* Estilos específicos para evitar que regras globais interfiram */
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.logout-form button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.logout-form button:hover {
+    text-decoration: underline;
+}
+
+
 body.dark-mode form {
     background: #1e1e1e94; /* Fundo escuro */
     color: #fff; /* Texto claro */
