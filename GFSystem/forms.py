@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 import re
 
+from datetime import datetime
+from django import forms
+from .models import Materia
+
 class MateriaForm(forms.ModelForm):
     DIAS_SEMANA = Materia.DIAS_SEMANA
 
@@ -22,21 +26,39 @@ class MateriaForm(forms.ModelForm):
         # Recebe o parâmetro 'is_edit' para saber se estamos na edição ou criação
         is_edit = kwargs.pop('is_edit', False)
         super(MateriaForm, self).__init__(*args, **kwargs)
-        
-        # Define automaticamente o ano e o semestre com base no ano atual
-        from datetime import datetime
+
+        # Define valores iniciais para ano e semestre
         current_year = str(datetime.now().year)
         current_semester = '1' if datetime.now().month <= 6 else '2'
         self.fields['ano'].initial = current_year
         self.fields['semestre'].initial = current_semester
-        
-        # Oculta os campos de ano e semestre
+
+        # Campos ocultos para ano e semestre
         self.fields['ano'].widget = forms.HiddenInput()
         self.fields['semestre'].widget = forms.HiddenInput()
-        
+
+        # Define os campos como opcionais para evitar erros de validação
+        self.fields['ano'].required = False
+        self.fields['semestre'].required = False
+
         # Se for edição, omite o campo 'anotacoes'
         if is_edit:
             self.fields['anotacoes'].widget = forms.HiddenInput()  # Oculta o campo de anotações
+
+    def clean_ano(self):
+        """Define um valor padrão para o campo ano, caso esteja vazio."""
+        ano = self.cleaned_data.get('ano')
+        if not ano:
+            ano = str(datetime.now().year)
+        return ano
+
+    def clean_semestre(self):
+        """Define um valor padrão para o campo semestre, caso esteja vazio."""
+        semestre = self.cleaned_data.get('semestre')
+        if not semestre:
+            semestre = '1' if datetime.now().month <= 6 else '2'
+        return semestre
+
 
         
 class UserRegistrationForm(forms.ModelForm):
@@ -130,4 +152,3 @@ class UserProfileForm(forms.ModelForm):
             profile.save()
         
         return profile
-

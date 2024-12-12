@@ -92,6 +92,8 @@ def adicionar_materia(request):
         if form.is_valid():
             materia = form.save(commit=False)
             materia.aluno = request.user
+            materia.ano = str(datetime.now().year)
+            materia.semestre = '1' if datetime.now().month <= 6 else '2'
             materia.save()
             messages.success(request, "Matéria adicionada com sucesso!")
             return redirect('dashboard')
