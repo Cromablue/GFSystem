@@ -136,6 +136,7 @@ def remover_materia(request, pk):
         return redirect('dashboard')
 
 
+@login_required
 def ver_anotacoes(request, pk):
     """
     Exibe e edita as anotações de uma matéria específica.
@@ -154,6 +155,7 @@ def ver_anotacoes(request, pk):
     # Contexto para renderizar a página
     context = {'materia': materia}
     return render(request, 'ver_anotacoes.html', context)
+
 
 @login_required
 def lixeira(request):

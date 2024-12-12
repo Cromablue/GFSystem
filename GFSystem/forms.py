@@ -112,6 +112,7 @@ class UserProfileForm(forms.ModelForm):
     aniversario = forms.DateField(required=False)
 
     def __init__(self, *args, **kwargs):
+        
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 

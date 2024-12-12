@@ -27,9 +27,21 @@
                     </li>
                     
                 {% if request.path == '/' or request.path == '/login/' or request.path == '/cadastro/' %}
+                {% if user.is_authenticated %}
                     <li class="nav-item" role="presentation">
-                        <a class="text-white nav-link rounded-5 {% if request.path == '/login/' %}active{% endif %}" href="{% url 'login' %}" aria-selected="false">Login</a>
+                        <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-white nav-link rounded-5 bg-transparent border-0">
+                                Sair
+                            </button>
+                        </form>
                     </li>
+                {% else %}
+                    <li class="nav-item" role="presentation">
+                        <a class="text-white nav-link rounded-5" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
+            
                               
                     <li class="nav-item" role="presentation">
                         <a class="text-white nav-link rounded-5 {% if request.path == '/cadastro/' %}active{% endif %}" href="{% url 'cadastro' %}" aria-selected="false">Cadastrar</a>
