@@ -104,23 +104,20 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
                         </div>
-
-                        <!-- Aniversário -->
+                
+                        <!-- Botão Salvar -->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputBirthday">Aniversário</label>
-                            <input 
-                                class="form-control {% if form.aniversario.errors %}is-invalid{% endif %}" 
-                                id="inputBirthday" 
-                                type="date" 
-                                name="aniversario" 
-                                value="{{ form.aniversario.value }}" 
-                                >
-                            {% for error in form.aniversario.errors %}
+                            <label class="small mb-1" for="inputFoto">Foto de Perfil</label>
+                            <input class="form-control {% if form.foto.errors %}is-invalid{% endif %}" 
+                                   id="inputFoto" 
+                                   type="file" 
+                                   name="foto">
+                            {% for error in form.foto.errors %}
                                 <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
                         </div>
-                        <!-- Botão Salvar -->
                         <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+                        <button class="btn btn-danger" type="button" onclick="window.location.href = '{% url 'perfil' %}'">Cancelar</button>
                     </form>                    
                 </div>
             </div>

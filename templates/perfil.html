@@ -43,24 +43,19 @@
                             <p class="form-control-static">{{ profile.last_name }}</p>
                         </div>
                     </div>
-                    <!-- Telefone e Aniversário -->
-                    <div class="row gx-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="small mb-1">Telefone:</label>
-                            <p class="form-control-static">{{ profile.telefone }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small mb-1">Aniversário:</label>
-                            <p class="form-control-static">{{ profile.aniversario|date:'d/m/Y' }}</p>
-                        </div>
-                    </div>
-                    <!-- Endereço -->
+                    <!-- Email -->
                     <div class="mb-3">
-                        <label class="small mb-1">Endereço:</label>
-                        <p class="form-control-static">{{ profile.endereco }}</p>
+                        <label class="small mb-1">Email:</label>
+                        <p class="form-control-static">{{ user.email }}</p>
+                    </div>
+                    <!-- Telefone -->
+                    <div class="mb-3">
+                        <label class="small mb-1">Telefone:</label>
+                        <p class="form-control-static">{{ profile.telefone }}</p>
                     </div>
                     <!-- Botão Editar -->
                     <a href="{% url 'edit_profile' %}" class="btn btn-primary">Editar Perfil</a>
+                    <a href="{% url 'change_password' %}" class="btn btn-primary">Alterar Senha</a>
                 </div>
             </div>
         </div>

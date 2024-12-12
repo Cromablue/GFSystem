@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar Perfil{% endblock %}
+{% block content %}
+<!-- edit_profile.html -->
+
+<div class="container-xl px-4 mt-4">
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <!-- Account Details -->
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <div class="card-header">Alterar Senha da Conta</div>
+                <div class="card-body">
+                    <form method="POST" class="mx-auto p-4 rounded shadow-sm w-100" id="changePasswordForm">
+                        {% csrf_token %}
+                        
+                        <!-- Exibindo erros de validação -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags != 'success' %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- Campo Senha Atual -->
+                        <div class="mb-3">
+                            <label for="id_old_password" class="form-label">Senha Atual</label>
+                            <input 
+                                type="password" 
+                                id="id_old_password" 
+                                name="old_password" 
+                                class="form-control {% if messages %}is-invalid{% endif %}"
+                                placeholder="Digite sua senha atual" 
+                                required>
+                            <div class="invalid-feedback">
+                                A senha atual é obrigatória.
+                            </div>
+                        </div>
+
+                        <!-- Campo Nova Senha -->
+                        <div class="mb-3">
+                            <label for="id_new_password1" class="form-label">Nova Senha</label>
+                            <input 
+                                type="password" 
+                                id="id_new_password1" 
+                                name="new_password1" 
+                                class="form-control {% if messages %}is-invalid{% endif %}"
+                                placeholder="Crie uma nova senha" 
+                                required>
+                            <div class="invalid-feedback">
+                                A nova senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial.
+                            </div>
+                        </div>
+
+                        <!-- Requisitos de Senha -->
+                        <div id="passwordRequirements" class="mb-3">
+                            <ul>
+                                <li id="minLength" class="text-danger">Deve ter pelo menos 8 caracteres</li>
+                                <li id="uppercase" class="text-danger">Deve incluir pelo menos uma letra maiúscula</li>
+                                <li id="number" class="text-danger">Deve incluir pelo menos um número</li>
+                                <li id="specialChar" class="text-danger">Deve incluir pelo menos um caractere especial (ex: @, #, $, etc.)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Campo Confirmar Nova Senha -->
+                        <div class="mb-3">
+                            <label for="id_new_password2" class="form-label">Confirme a Nova Senha</label>
+                            <input 
+                                type="password" 
+                                id="id_new_password2" 
+                                name="new_password2" 
+                                class="form-control {% if messages %}is-invalid{% endif %}"
+                                placeholder="Confirme sua nova senha" 
+                                required>
+                            <div class="invalid-feedback">
+                                As senhas não coincidem.
+                            </div>
+                        </div>
+
+                        <!-- Botão de Alterar Senha -->
+                        <button class="btn btn-primary" type="submit">Salvar Senha</button>
+                        <button class="btn btn-danger" type="button" onclick="window.location.href = '{% url 'perfil' %}'">Cancelar</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

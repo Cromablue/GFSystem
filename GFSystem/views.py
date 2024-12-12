@@ -10,6 +10,10 @@ from .models import Materia, UserProfile
 import re
 
 
+# Requisitos para alterar a senha:
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 # Páginas Públicas
 def home(request):
     """
@@ -242,25 +246,32 @@ def perfil(request):
 
 @login_required
 def edit_profile(request):
-    """
-    Permite a edição do perfil do usuário.
-    """
+    """Permite a edição do perfil do usuário."""
     profile = request.user.profile
-    
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
-        
         if form.is_valid():
-            form.save()  # Salva todos os dados corretamente agora
+            form.save()  # Salva todos os dados corretamente
             messages.success(request, "Perfil atualizado com sucesso!")
             return redirect('perfil')
-        
-        # Mensagens de erro serão tratadas no próprio formulário
-
     else:
         form = UserProfileForm(instance=profile, user=request.user)
-
     return render(request, 'edit_profile.html', {'form': form, 'profile': profile})
+
+@login_required
+def change_password(request):
+    """Permite a alteração da senha do usuário."""
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Mantém o usuário logado após a troca de senha
+            messages.success(request, "Senha alterada com sucesso!")
+            return redirect('perfil')
+    else:
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, 'edit_senha.html', {'password_form': password_form})
 
 
 @login_required
