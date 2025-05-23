@@ -1,161 +1,144 @@
+
 # GFSystem
 
 Bem-vindo ao **GFSystem**, um sistema simples e eficiente desenvolvido em **Django** para gerenciar suas matérias e acompanhar suas faltas ao longo do período letivo. O sistema fornece relatórios visuais e alertas sobre o percentual de faltas, ajudando você a evitar reprovações por excesso de faltas.
 
 ---
 
-## **Funcionalidades**
+## 🚀 Funcionalidades
 
-- **Cadastro de Matérias:**
-  - Permite adicionar nome, descrição, carga horária, dias da semana e faltas iniciais.
-  
-- **Dashboard Intuitivo:**
-  - Exibe todas as matérias com informações detalhadas, incluindo:
+- **📘 Cadastro de Matérias:**  
+  - Adicione nome, descrição, carga horária, dias da semana e faltas iniciais.
+
+- **📊 Dashboard Intuitivo:**  
+  - Exibe todas as matérias com informações detalhadas:
     - Nome da matéria.
     - Descrição (opcional).
     - Carga horária total.
     - Dias da semana.
-    - Faltas registradas e seu percentual em relação ao limite permitido.
-    - Status com alertas:
-      - **Verde**: "Tá de boa" (baixo percentual de faltas).
-      - **Amarelo**: "Melhor não faltar" (fique atento!).
-      - **Laranja**: "Mais um reprova" (alto risco de reprovação).
-      - **Vermelho**: "Reprovou mn" (acima do limite permitido).
+    - Faltas registradas e seu percentual.
+    - Status com alertas coloridos:
+      - 🟢 **Verde**: "Tá de boa"
+      - 🟡 **Amarelo**: "Melhor não faltar"
+      - 🟠 **Laranja**: "Mais um reprova"
+      - 🔴 **Vermelho**: "Reprovou mn"
 
-- **Gestão de Faltas:**
-  - Adicione faltas diretamente no dashboard com apenas um clique.
+- **➕ Gestão de Faltas:**  
+  - Adicione faltas diretamente no dashboard com um clique.
 
-- **Edição e Exclusão de Matérias:**
-  - Atualize ou remova informações de uma matéria existente.
+- **✏️ Edição e 🗑️ Exclusão de Matérias:**  
+  - Atualize ou remova informações de matérias.
 
-- **Finalizar Período:**
-  - Botão dedicado para excluir todas as matérias cadastradas e começar um novo período letivo.
-
----
-
-## **Pré-requisitos**
-
-Certifique-se de ter os seguintes itens instalados no seu ambiente:
-
-- Python 3.8+
-- Django 4.2+
-- Banco de dados (SQLite ou outro configurado no Django).
+- **🔁 Finalizar Período:**  
+  - Limpe todos os dados e comece um novo período letivo.
 
 ---
 
-## **Instalação**
+## ✅ Pré-requisitos
 
-1. **Clone este repositório:**
-   ```bash
-   git clone https://github.com/Cromablue/GFSystem.git
-   cd GFSystem
-   ```
-
-2. **Crie e ative um ambiente virtual:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
-   ```
-
-3. **Instale as dependências:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Realize as migrações do banco de dados:**
-   ```bash
-   python manage.py migrate
-   ```
-
-5. **Inicie o servidor de desenvolvimento:**
-   ```bash
-   python manage.py runserver
-   ```
-
-6. **Acesse o sistema:**
-   - Abra o navegador e acesse: [http://127.0.0.1:8000](http://127.0.0.1:8000).
+- Python 3.8+  
+- Django 4.2+  
+- MariaDB (preferencialmente em cluster Galera)  
+- Linux com scripts de deploy para master/slaves (opcional)
 
 ---
 
-## **Estrutura do Sistema**
+## ⚙️ Instalação e Deploy Automatizado
+
+### 1. Clonar o Repositório
+
+```bash
+git clone https://github.com/Cromablue/GFSystem.git
+cd GFSystem
+```
+
+### 2. Criar e Ativar Ambiente Virtual
+
+```bash
+python -m venv venv
+source venv/bin/activate     # Linux/Mac
+venv\Scripts\activate      # Windows
+```
+
+### 3. Instalar Dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Deploy do Cluster (Opcional)
+
+```bash
+cd deploy
+chmod +x deploy.sh deploy_master.sh deploy_slave.sh
+sudo ./deploy.sh
+```
+
+- Escolha o tipo de nó: Master, Slave 1 ou Slave 2.
+- O script configurará IP fixo, Galera, Bind9, firewall e Django.
+
+### 5. Rodar o Servidor Django
+
+```bash
+cd ..
+source venv/bin/activate
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000
+```
+
+Acesse no navegador pelo IP do nó master na porta 8000.
+
+---
+
+## 🧱 Estrutura do Sistema
 
 - **Modelos:**
-  - `Materia`: Gerencia os dados das matérias, cálculo do limite de faltas e validações.
+  - `Materia`: armazena dados da disciplina, faltas e lógica de alerta.
 
 - **Views:**
-  - `dashboard`: Exibe a lista de matérias e as interações possíveis.
-  - `adicionar_materia`: Página para criar novas matérias.
-  - `editar_materia`: Atualizar os dados de uma matéria.
-  - `adicionar_faltas`: Incrementa as faltas de uma matéria.
-  - `remover_materia`: Remove uma matéria específica.
-  - `finalizar_periodo`: Remove todas as matérias do usuário atual.
+  - `dashboard`, `adicionar_materia`, `editar_materia`, `adicionar_faltas`, `remover_materia`, `finalizar_periodo`
 
 - **Templates:**
-  - Arquivos HTML organizados para fácil manutenção e extensão.
+  - HTMLs organizados para fácil manutenção.
 
 ---
 
-## **Uso**
+## 💡 Como Usar
 
-1. **Adicionar uma Matéria:**
-   - Vá até o botão "Adicionar Matéria" no dashboard.
-   - Preencha os campos necessários (nome, carga horária, etc.).
-   - Clique em "Salvar".
-
-2. **Acompanhar Faltas:**
-   - No dashboard, visualize o percentual de faltas e os alertas correspondentes.
-
-3. **Adicionar Faltas:**
-   - Clique no botão vermelho **"Faltei :("** para incrementar as faltas.
-
-4. **Editar ou Remover Matérias:**
-   - Utilize os botões "Editar" e "Remover" na matéria correspondente.
-
-5. **Finalizar Período:**
-   - Clique no botão **"Finalizar Período"** para excluir todas as matérias e começar do zero.
+1. **Adicionar Matéria:** Clique em "Adicionar Matéria" no dashboard.
+2. **Visualizar Alertas:** Veja alertas de faltas no dashboard.
+3. **Registrar Faltas:** Use o botão **"Faltei :("**.
+4. **Editar ou Remover:** Use os botões correspondentes.
+5. **Finalizar Período:** Reseta tudo e começa do zero.
 
 ---
 
-## **Personalização**
+## 🎨 Personalização
 
-- **Estilização:**
-  - O sistema utiliza Bootstrap para estilização responsiva.
-  - Edite os templates localizados em `templates/` para personalizar a aparência.
-
-- **Mensagens de Status:**
-  - Mensagens como "Tá de boa" ou "Reprovou mn" podem ser alteradas diretamente no arquivo de templates do dashboard.
+- **Estilo:** Usa Bootstrap (responsivo).
+- **Textos e Alertas:** Editáveis nos templates.
 
 ---
 
-## **Contribuição**
+## 🤝 Contribuindo
 
-1. Faça um fork deste repositório.
-2. Crie uma nova branch:
-   ```bash
-   git checkout -b feature/minha-nova-feature
-   ```
-3. Realize suas alterações e commit:
-   ```bash
-   git commit -m "Adiciona minha nova feature"
-   ```
-4. Envie as alterações:
-   ```bash
-   git push origin feature/minha-nova-feature
-   ```
-5. Abra um pull request.
+```bash
+git checkout -b feature/minha-nova-feature
+git commit -m "Adiciona minha nova feature"
+git push origin feature/minha-nova-feature
+```
+
+Abra um **pull request** com sua proposta.
 
 ---
 
-## **Licença**
+## 📄 Licença
 
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
+MIT — Veja o arquivo `LICENSE` para detalhes.
 
 ---
 
-## **Contato**
+## 📬 Contato
 
-- Desenvolvedor: [José Santo de Moura Neto](https://github.com/cromablue)
+- Desenvolvedor: [José Santo de Moura Neto](https://github.com/cromablue)  
 - Email: jsmoura.dev@gmail.com
-
----
